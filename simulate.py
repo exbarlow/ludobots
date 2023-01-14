@@ -9,18 +9,11 @@ import constants as c
 from simulation import SIMULATION
 
 simulation = SIMULATION()
-# physicsClient = p.connect(p.GUI)
-# p.setAdditionalSearchPath(pybullet_data.getDataPath())
 
-# ## Set up world
-# p.setGravity(*c.gravity)
 
-# planeId = p.loadURDF("plane.urdf")
-# robotId = p.loadURDF("body.urdf")
-# p.loadSDF("world.sdf")
 
 # ## Prepare robot simulation
-# pyrosim.Prepare_To_Simulate(robotId)
+
 # backLegSensorValues = np.zeros(c.timeSteps)
 # frontLegSensorValues = np.zeros(c.timeSteps)
 
