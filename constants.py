@@ -13,3 +13,5 @@ amplitude_fl = math.pi/4
 frequency_fl = 5
 phaseOffset_fl = math.pi/2
 
+dataPath = "data/"
+

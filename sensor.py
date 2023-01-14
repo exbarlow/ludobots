@@ -8,7 +8,8 @@ class SENSOR:
 
     def Get_Value(self,i):
         self.values[i] = pyrosim.Get_Touch_Sensor_Value_For_Link(self.linkName)
-        if (i == c.timeSteps-1):
-            print(self.values)
+
+    def Save_Values(self):
+        np.save(c.dataPath + f"{self.linkName}_sensor_values.npy",self.values)
 
 

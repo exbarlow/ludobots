@@ -28,6 +28,14 @@ class ROBOT:
     def Act(self,t):
         for motor in self.motors.values():
             motor.Set_Value(t,self.robotId)
+    
+    def Save_Values(self):
+        for sensor in self.sensors.values():
+            sensor.Save_Values()
+        
+        for motor in self.motors.values():
+            motor.Save_Values()
+        
 
    
 

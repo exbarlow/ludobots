@@ -18,6 +18,7 @@ class SIMULATION:
         
 
     def __del__(self):
+        self.robot.Save_Values()
         p.disconnect()
     
     def Run(self):
@@ -28,4 +29,6 @@ class SIMULATION:
             self.robot.Act(i)
 
             time.sleep(c.sleepTime)
+        
+        
 
