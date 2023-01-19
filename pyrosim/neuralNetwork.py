@@ -18,6 +18,34 @@ class NEURAL_NETWORK:
 
         f.close()
 
+    def Get_Motor_Neurons_Joint(self,neuronName):
+        if neuronName not in self.neurons:
+            print(f"neuralNetwork.py | Get_Motor_Neurons_Joint: {neuronName} is not in the neuron network")
+            return None
+        elif not self.neurons[neuronName].Is_Motor_Neuron():
+            print(f"neuralNetwork.py | Get_Motor_Neurons_Joint: {neuronName} is not a motor neuron")
+            return None
+
+        return self.neurons[neuronName].Get_Joint_Name()
+        
+
+    def Get_Neuron_Names(self):
+        return [neuronName for neuronName in self.neurons.keys()]
+
+    def Get_Value_Of(self,neuronName):
+        if neuronName not in self.neurons:
+            print(f"neuralNetwork.py | Get_Motor_Neurons_Joint: {neuronName} is not in the neuron network")
+            return None
+
+        return self.neurons[neuronName].Get_Value()        
+
+    def Is_Motor_Neuron(self,neuronName):
+        if neuronName not in self.neurons:
+            return False
+        
+        return self.neurons[neuronName].Is_Motor_Neuron()
+            
+
     def Print(self):
 
         self.Print_Sensor_Neuron_Values()
