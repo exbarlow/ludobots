@@ -18,7 +18,6 @@ class SIMULATION:
         
 
     def __del__(self):
-        self.robot.Save_Values()
         p.disconnect()
     
     def Run(self):
