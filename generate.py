@@ -1,4 +1,5 @@
 import pyrosim.pyrosim as pyrosim
+import random
 
 
 def Create_World():
@@ -34,6 +35,8 @@ def Generate_Body():
 def Generate_Brain():
     pyrosim.Start_NeuralNetwork("brain.nndf")
 
+
+
     pyrosim.Send_Sensor_Neuron(name=0,linkName="Torso")
     pyrosim.Send_Sensor_Neuron(name=1,linkName="BackLeg")
     pyrosim.Send_Sensor_Neuron(name=2,linkName="FrontLeg")
@@ -41,13 +44,10 @@ def Generate_Brain():
     pyrosim.Send_Motor_Neuron(name=3,jointName="Torso_BackLeg")
     pyrosim.Send_Motor_Neuron(name=4,jointName="Torso_FrontLeg")
 
-    pyrosim.Send_Synapse(sourceNeuronName=0,targetNeuronName=3,weight=1.0)
-    pyrosim.Send_Synapse(sourceNeuronName=1,targetNeuronName=3,weight=2.0)
-    pyrosim.Send_Synapse(sourceNeuronName=0,targetNeuronName=4,weight=0.0)
-    pyrosim.Send_Synapse(sourceNeuronName=2,targetNeuronName=4,weight=0.0)
+    for sensorNeuron in range(3):
+        for motorNeuron in range(3,5):
+            pyrosim.Send_Synapse(sourceNeuronName=sensorNeuron,targetNeuronName=motorNeuron,weight=(random.random()*2)-1)
 
-    ## 1,2,1,2 = does a flip then falls
-    ## 1,2,0,0 = slides far far away :(
     pyrosim.End()
 
 Create_World()
