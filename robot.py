@@ -38,6 +38,7 @@ class ROBOT:
             motor.Save_Values()
 
     def Think(self):
+        self.nn.Update()
         self.nn.Print()
         
 
