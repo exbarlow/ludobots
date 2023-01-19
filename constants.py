@@ -1,7 +1,7 @@
 import math
 
 gravity = (0,0,-9.8)
-timeSteps = 10000
+timeSteps = 1000
 sleepTime = 1/10000
 maxForce = 250
 
