@@ -1,8 +1,8 @@
 import math
 
 gravity = (0,0,-9.8)
-timeSteps = 1000
-sleepTime = 1/800
+timeSteps = 10000
+sleepTime = 1/10000
 maxForce = 250
 
 amplitude = math.pi/4

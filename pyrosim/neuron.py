@@ -80,8 +80,7 @@ class NEURON:
                 synapseWeight = synapses[synapse].Get_Weight()
                 presynapticNeuronValue = neurons[synapse[0]].Get_Value()
                 self.Allow_Presynaptic_Neuron_To_Influence_Me(synapseWeight,presynapticNeuronValue)
-        print(self.Get_Value())
-        exit()
+        self.Threshold()
     
 
 

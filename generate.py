@@ -42,9 +42,14 @@ def Generate_Brain():
     pyrosim.Send_Motor_Neuron(name=4,jointName="Torso_FrontLeg")
 
     pyrosim.Send_Synapse(sourceNeuronName=0,targetNeuronName=3,weight=1.0)
+    pyrosim.Send_Synapse(sourceNeuronName=1,targetNeuronName=3,weight=2.0)
+    pyrosim.Send_Synapse(sourceNeuronName=0,targetNeuronName=4,weight=0.0)
+    pyrosim.Send_Synapse(sourceNeuronName=2,targetNeuronName=4,weight=0.0)
 
+    ## 1,2,1,2 = does a flip then falls
+    ## 1,2,0,0 = slides far far away :(
     pyrosim.End()
-    
+
 Create_World()
 # Create_Robot()
 Generate_Body()
