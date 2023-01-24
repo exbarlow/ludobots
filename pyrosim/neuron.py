@@ -74,7 +74,6 @@ class NEURON:
 
     def Update_Hidden_Or_Motor_Neuron(self,neurons,synapses):
         self.Set_Value(0)
-        print(self.Get_Value())
         for synapse in synapses.keys():
             if synapse[1] == self.Get_Name():
                 synapseWeight = synapses[synapse].Get_Weight()
