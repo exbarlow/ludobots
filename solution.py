@@ -1,6 +1,7 @@
 import numpy as np
 import pyrosim.pyrosim as pyrosim
 import os
+import random
 
 class SOLUTION:
     def __init__(self):
@@ -50,3 +51,9 @@ class SOLUTION:
         f = open("fitness.txt","r")
         self.fitness = float(f.read())
         f.close()
+
+    def Mutate(self):
+        rows, cols = self.weights.shape
+        randomRow = random.randint(0,rows-1)
+        randomColumn = random.randint(0,cols-1)
+        self.weights[randomRow,randomColumn] = random.random() * 2 - 1
