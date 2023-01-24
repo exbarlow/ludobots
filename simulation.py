@@ -9,8 +9,12 @@ import time
 import math
 
 class SIMULATION:
-    def __init__(self):
-        self.physicsClient = p.connect(p.DIRECT)
+    def __init__(self,directOrGUI):
+        if directOrGUI == "DIRECT":
+            self.physicsClient = p.connect(p.DIRECT)
+        elif directOrGUI == "GUI":
+            self.physicsClient = p.connect(p.GUI)
+
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
         self.world = WORLD()
         self.robot = ROBOT()

@@ -43,11 +43,15 @@ class SOLUTION:
         pyrosim.End()
 
     
-    def Evaluate(self):
+    def Evaluate(self,directOrGUI):
+        if directOrGUI != "DIRECT" and directOrGUI != "GUI":
+            print("parameter must be DIRECT or GUI")
+            exit()
+            
         self.Create_World()
         self.Create_Body()
         self.Create_Brain()
-        os.system("python3 simulate.py")
+        os.system(f"python3 simulate.py {directOrGUI}")
         f = open("fitness.txt","r")
         self.fitness = float(f.read())
         f.close()

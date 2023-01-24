@@ -1,14 +1,12 @@
-import pybullet as p
-import pybullet_data
-import time
-import pyrosim.pyrosim as pyrosim
-import numpy as np
-import math
-import random
-import constants as c
 from simulation import SIMULATION
+import sys
 
-simulation = SIMULATION()
+if len(sys.argv) != 2:
+    print("ERROR, one and only one parameter should be passed in")
+    exit()
+
+directOrGUI = sys.argv[1]
+simulation = SIMULATION(directOrGUI)
 simulation.Run()
 simulation.Get_Fitness()
 
