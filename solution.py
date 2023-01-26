@@ -6,9 +6,10 @@ import constants as c
 import time
 
 class SOLUTION:
-    def __init__(self):
+    def __init__(self,sol_id):
         self.weights = np.random.rand(3,2)
         self.weights = self.weights * 2 - 1
+        self.myID = sol_id
 
     def Create_World(self):
         pyrosim.Start_SDF("world.sdf")
@@ -65,3 +66,6 @@ class SOLUTION:
         randomRow = random.randint(0,rows-1)
         randomColumn = random.randint(0,cols-1)
         self.weights[randomRow,randomColumn] = random.random() * 2 - 1
+
+    def Set_ID(self,new_id):
+        self.id = new_id
