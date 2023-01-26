@@ -30,7 +30,7 @@ class SOLUTION:
         pyrosim.End()
 
     def Create_Brain(self):
-        pyrosim.Start_NeuralNetwork("brain.nndf")
+        pyrosim.Start_NeuralNetwork(f"brain{self.myID}.nndf")
 
         pyrosim.Send_Sensor_Neuron(name=0,linkName="Torso")
         pyrosim.Send_Sensor_Neuron(name=1,linkName="BackLeg")
@@ -54,7 +54,7 @@ class SOLUTION:
         self.Create_World()
         self.Create_Body()
         self.Create_Brain()
-        os.system("python3 simulate.py " + directOrGUI + " &")
+        os.system(f"python3 simulate.py {directOrGUI} {self.myID} &")
         f = open(c.fitnessFileName,"r")
         # while not os.path.exists(c.fitnessFileName):
         #     time.sleep(0.01)
@@ -68,4 +68,4 @@ class SOLUTION:
         self.weights[randomRow,randomColumn] = random.random() * 2 - 1
 
     def Set_ID(self,new_id):
-        self.id = new_id
+        self.myID = new_id
