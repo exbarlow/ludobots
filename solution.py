@@ -2,6 +2,8 @@ import numpy as np
 import pyrosim.pyrosim as pyrosim
 import os
 import random
+import constants as c
+import time
 
 class SOLUTION:
     def __init__(self):
@@ -51,8 +53,10 @@ class SOLUTION:
         self.Create_World()
         self.Create_Body()
         self.Create_Brain()
-        os.system(f"python3 simulate.py {directOrGUI}")
-        f = open("fitness.txt","r")
+        os.system("python3 simulate.py " + directOrGUI + " &")
+        f = open(c.fitnessFileName,"r")
+        # while not os.path.exists(c.fitnessFileName):
+        #     time.sleep(0.01)
         self.fitness = float(f.read())
         f.close()
 
