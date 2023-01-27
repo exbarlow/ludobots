@@ -5,14 +5,11 @@ timeSteps = 1000
 sleepTime = 1/10000
 maxForce = 250
 
-amplitude = math.pi/4
-frequency = 5
-phaseOffset = 0
-
-numSensorNeurons = 3
-numMotorNeurons = 2
+motorJointRange = 0.4
+numSensorNeurons = 8
+numMotorNeurons = 7
 
 dataPath = "data/"
 
-numberOfGenerations = 1
-populationSize = 1
+numberOfGenerations = 50
+populationSize = 10
