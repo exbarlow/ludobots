@@ -9,11 +9,10 @@ amplitude = math.pi/4
 frequency = 5
 phaseOffset = 0
 
-amplitude_fl = math.pi/4
-frequency_fl = 5
-phaseOffset_fl = math.pi/2
+numSensorNeurons = 3
+numMotorNeurons = 2
 
 dataPath = "data/"
 
-numberOfGenerations = 10
-populationSize = 10
+numberOfGenerations = 1
+populationSize = 1

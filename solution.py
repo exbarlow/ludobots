@@ -7,7 +7,7 @@ import time
 
 class SOLUTION:
     def __init__(self,sol_id):
-        self.weights = np.random.rand(3,2)
+        self.weights = np.random.rand(c.numSensorNeurons,c.numMotorNeurons)
         self.weights = self.weights * 2 - 1
         self.myID = sol_id
 
@@ -42,11 +42,14 @@ class SOLUTION:
         pyrosim.Send_Motor_Neuron(name=3,jointName="Torso_BackLeg")
         pyrosim.Send_Motor_Neuron(name=4,jointName="Torso_FrontLeg")
 
-        for currentRow in range(3):
-            for currentColumn in range(2):
-                pyrosim.Send_Synapse(sourceNeuronName=currentRow,targetNeuronName=currentColumn+3,weight=self.weights[currentRow][currentColumn])
+        for currentRow in range(c.numSensorNeurons):
+            for currentColumn in range(c.numMotorNeurons):
+                pyrosim.Send_Synapse(sourceNeuronName=currentRow,
+                                    targetNeuronName=currentColumn+c.numSensorNeurons,
+                                    weight=self.weights[currentRow][currentColumn])
 
         pyrosim.End()
+
 
     def Start_Simulation(self,directOrGUI):
         if directOrGUI != "DIRECT" and directOrGUI != "GUI":
