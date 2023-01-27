@@ -45,8 +45,7 @@ class SOLUTION:
 
         pyrosim.End()
 
-    
-    def Evaluate(self,directOrGUI):
+    def Start_Simulation(self,directOrGUI):
         if directOrGUI != "DIRECT" and directOrGUI != "GUI":
             print("parameter must be DIRECT or GUI")
             exit()
@@ -54,12 +53,17 @@ class SOLUTION:
         self.Create_World()
         self.Create_Body()
         self.Create_Brain()
-        os.system(f"python3 simulate.py {directOrGUI} {self.myID} &")
-        f = open(c.fitnessFileName,"r")
-        # while not os.path.exists(c.fitnessFileName):
-        #     time.sleep(0.01)
+        os.system(f"python3 simulate.py {directOrGUI} {self.myID} & ")
+
+    def Wait_For_Simulation_To_End(self):
+        fitnessFileName = f"fitness{self.myID}.txt"
+        while not os.path.exists(fitnessFileName):
+            time.sleep(0.2)
+        f = open(fitnessFileName,"r")
         self.fitness = float(f.read())
         f.close()
+        time.sleep(0.03)
+        os.system(f"rm {fitnessFileName}")
 
     def Mutate(self):
         rows, cols = self.weights.shape

@@ -17,4 +17,3 @@ dataPath = "data/"
 
 numberOfGenerations = 50
 populationSize = 2
-fitnessFileName = "fitness.txt"
