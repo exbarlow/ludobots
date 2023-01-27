@@ -15,5 +15,5 @@ phaseOffset_fl = math.pi/2
 
 dataPath = "data/"
 
-numberOfGenerations = 2
-populationSize = 2
+numberOfGenerations = 10
+populationSize = 10

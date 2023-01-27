@@ -11,6 +11,9 @@ class SOLUTION:
         self.weights = self.weights * 2 - 1
         self.myID = sol_id
 
+    def __lt__(self,other):
+        return self.fitness < other.fitness
+
     def Create_World(self):
         pyrosim.Start_SDF("world.sdf")
 
@@ -50,15 +53,15 @@ class SOLUTION:
             print("parameter must be DIRECT or GUI")
             exit()
             
-        self.Create_World()
-        self.Create_Body()
+        # self.Create_World()
+        # self.Create_Body()
         self.Create_Brain()
         os.system(f"python3 simulate.py {directOrGUI} {self.myID} & ")
 
     def Wait_For_Simulation_To_End(self):
         fitnessFileName = f"fitness{self.myID}.txt"
         while not os.path.exists(fitnessFileName):
-            time.sleep(0.2)
+            time.sleep(1)
         f = open(fitnessFileName,"r")
         self.fitness = float(f.read())
         f.close()
