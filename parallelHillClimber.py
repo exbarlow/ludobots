@@ -48,7 +48,8 @@ class PARALLEL_HILL_CLIMBER:
         # exit()
 
     def Mutate(self):
-        self.child.Mutate()
+        for child in self.children:
+            child.Mutate()
 
     def Select(self):
         if self.parent.fitness > self.child.fitness:
