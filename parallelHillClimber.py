@@ -26,8 +26,8 @@ class PARALLEL_HILL_CLIMBER:
             self.Evolve_For_One_Generation(currentGeneration)
 
     def Evolve_For_One_Generation(self,currentGeneration):
-        # self.Spawn()
-        # self.Mutate()
+        self.Spawn()
+        self.Mutate()
         # if currentGeneration == 0: 
         #     self.child.Evaluate("GUI")
         # else:
@@ -35,12 +35,17 @@ class PARALLEL_HILL_CLIMBER:
 
         # self.Print()
         # self.Select()
-        pass
 
     def Spawn(self):
-        self.child = copy.deepcopy(self.parent)
-        self.child.Set_ID(self.nextAvailableID)
-        self.nextAvailableID+=1
+        self.children = {}
+        print(len(self.parents))
+        for i in range(len(self.parents)):
+            self.children[i] = copy.deepcopy(list(self.parents.values())[i])
+            self.children[i].Set_ID(self.nextAvailableID)
+            self.nextAvailableID+=1
+        # for key, val in self.children.items():
+        #     print(key,val)
+        # exit()
 
     def Mutate(self):
         self.child.Mutate()
