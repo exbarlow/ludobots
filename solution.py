@@ -56,7 +56,7 @@ class SOLUTION:
         # self.Create_World()
         # self.Create_Body()
         self.Create_Brain()
-        os.system(f"python3 simulate.py {directOrGUI} {self.myID} & ")
+        os.system(f"python3 simulate.py {directOrGUI} {self.myID} 2&>erroutput & ")
 
     def Wait_For_Simulation_To_End(self):
         fitnessFileName = f"fitness{self.myID}.txt"
