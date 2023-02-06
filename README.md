@@ -17,6 +17,6 @@ not a problem for your machine, it is recommended to reduce these values to impr
 ### New Functionalities (aside from each individual branch, which have their respective changes in their own `README.md`s)
 
 Saved Searches
-: The best `brain.nndf` file corresponding to the "most fit" individual each run of `search.py` is automatically saved to `saved_searches/`. Running `python3 viewSavedSearches.py` will run a simulation of each of these saved files on GUI mode.
+- The best `brain.nndf` file corresponding to the "most fit" individual each run of `search.py` is automatically saved to `saved_searches/`. Running `python3 viewSavedSearches.py` will run a simulation of each of these saved files on GUI mode.
 
 
