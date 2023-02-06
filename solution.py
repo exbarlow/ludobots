@@ -85,8 +85,11 @@ class SOLUTION:
         pyrosim.End()
 
 
-    def Create_Brain(self):
-        pyrosim.Start_NeuralNetwork(f"brain{self.myID}.nndf")
+    def Create_Brain(self,isBest):
+        folder = ""
+        if isBest:
+            folder = "saved_searches/"
+        pyrosim.Start_NeuralNetwork(f"{folder}brain{self.myID}.nndf")
 
         i = 0
         for linkName in ["Torso","BackLeg","FrontLeg","LeftLeg","RightLeg","FrontLowerLeg","BackLowerLeg","LeftLowerLeg","RightLowerLeg"]:
@@ -105,14 +108,14 @@ class SOLUTION:
         pyrosim.End()
 
 
-    def Start_Simulation(self,directOrGUI):
+    def Start_Simulation(self,directOrGUI,isBest=False):
         if directOrGUI != "DIRECT" and directOrGUI != "GUI":
             print("parameter must be DIRECT or GUI")
             exit()
             
         # self.Create_World()
         # self.Create_Body()
-        self.Create_Brain()
+        self.Create_Brain(isBest=isBest)
         os.system(f"python3 simulate.py {directOrGUI} {self.myID} 2&>erroutput & ")
 
     def Wait_For_Simulation_To_End(self):

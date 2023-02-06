@@ -2,7 +2,6 @@ from solution import SOLUTION
 import constants as c
 import copy
 import os
-
 class PARALLEL_HILL_CLIMBER:
     def __init__(self):
         # self.parent = SOLUTION()
@@ -31,7 +30,7 @@ class PARALLEL_HILL_CLIMBER:
         self.Spawn()
         self.Mutate()
         self.Evaluate(self.children)
-        self.Print()
+        # self.Print()
         self.Select()
 
     def Spawn(self):
@@ -57,7 +56,7 @@ class PARALLEL_HILL_CLIMBER:
         # print(self.parent.fitness,self.child.fitness)
 
     def Show_Best(self):
-        min(self.parents.values()).Start_Simulation("GUI")
+        min(self.parents.values()).Start_Simulation("GUI",isBest=True)
         exit()
 
 
