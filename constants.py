@@ -10,6 +10,7 @@ numSensorNeurons = 8
 numMotorNeurons = 7
 
 dataPath = "data/"
+savedPath = "saved_searches/"
 
 numberOfGenerations = 50
 populationSize = 10

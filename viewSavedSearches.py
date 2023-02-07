@@ -1,5 +1,6 @@
 import glob
 from datetime import datetime
+import constants as c
 from simulation import SIMULATION
 
 def Start_Saved_Simulation(nndfName:str):
@@ -12,7 +13,7 @@ def Start_Saved_Simulation(nndfName:str):
     print(f"    duration:",str(endTime-startTime))
 
 if __name__ == "__main__":
-    brain_files = glob.glob('saved_searches/*.nndf')
+    brain_files = glob.glob(f"{c.savedPath}*.nndf")
     print(brain_files)
     for file in brain_files:
         Start_Saved_Simulation(file)
