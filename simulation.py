@@ -30,8 +30,8 @@ class SIMULATION:
         lastBounce = None
         largeBounceCumDuration = 0
 
-        textId = p.addUserDebugText(f"Time Spent Bouncing: {largeBounceCumDuration}", [-2, -2, 2], textColorRGB=[1, 0, 0], textSize=1.5)
-        nameId = p.addUserDebugText(f"File: {fileName}", [-5, -2, -2], textColorRGB=[1, 0, 0], textSize=1.5)
+        textId = p.addUserDebugText(f"Time Spent Bouncing: {largeBounceCumDuration}", [-2, -2, 3], textColorRGB=[1, 0, 0], textSize=1.5)
+        nameId = p.addUserDebugText(f"File: {fileName}", [-5, -2, 2], textColorRGB=[1, 0, 0], textSize=1.5)
         for i in range(c.timeSteps):
             p.stepSimulation()
             self.robot.Sense(i)
@@ -45,7 +45,7 @@ class SIMULATION:
                     if i - lastBounce >= 100:
                         largeBounceCumDuration += i-lastBounce
                         p.removeUserDebugItem(textId)
-                        textId = p.addUserDebugText(f"Time Spent Bouncing: {largeBounceCumDuration}", [-2, -2, 2], textColorRGB=[1, 0, 0], textSize=1.5)
+                        textId = p.addUserDebugText(f"Time Spent Bouncing: {largeBounceCumDuration}", [-2, -2, 3], textColorRGB=[1, 0, 0], textSize=1.5)
                     lastBounce = i
                 
             self.robot.Set_Fitness(largeBounceCumDuration)
