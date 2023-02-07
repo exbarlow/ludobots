@@ -14,7 +14,6 @@ def Start_Saved_Simulation(nndfName:str):
 
 if __name__ == "__main__":
     brain_files = glob.glob(f"{c.savedPath}*.nndf")
-    print(brain_files)
     for file in brain_files:
         Start_Saved_Simulation(file)
 

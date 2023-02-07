@@ -2,5 +2,5 @@ env/*
 env
 data/*
 data
-fitness*.txt
+/fitness.*txt
 erroutput

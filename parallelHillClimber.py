@@ -56,13 +56,15 @@ class PARALLEL_HILL_CLIMBER:
             print("child fitness:",self.children[parentID].fitness,"\n")
         # print(self.parent.fitness,self.child.fitness)
 
-    def Show_Best(self):
+    def Show_Best(self,saveName):
         bestParent = max(self.parents.values())
         bestParent.Start_Simulation("GUI",save=True)
-        fitnessFileName = f"fitness{bestParent.myID}.txt"
-        while not os.path.exists(fitnessFileName):
-            time.sleep(1)
-        os.system(f"mv {fitnessFileName} {c.savedPath}{fitnessFileName}")
+
+        while not os.path.exists(f"fitness{bestParent.myID}.txt"):
+            time.sleep(0.25)
+
+        os.system(f"mv fitness{bestParent.myID}.txt {c.savedPath}fitness_{saveName}.txt")
+        os.system(f"mv {c.savedPath}brain{bestParent.myID}.nndf {c.savedPath}brain_{saveName}.nndf")
 
 
 
