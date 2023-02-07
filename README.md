@@ -8,16 +8,15 @@ and installing the requirements locally with `pip3 -r requirements.txt`.
 ### Branch Structure
 
 I experimented with a couple of the final project ideas in the reddit thread, they can be found in each of the branches below:
+- Up up and Away (this branch!)
+- Marching to the beat (marchingToTheBeat)
 
-
-In each of these branches, the experiment can be run with `python3 search.py`. Note that in the `Wait_For_Simulation_To_End` method within `solution.py`,
-the values of `time.sleep()` are set very high to account for the fact that with my m1 chip, lower values cause synchronization issues. If this is 
-not a problem for your machine, it is recommended to reduce these values to improve performance speed.
+In each of these branches, the experiment can be run with `python3 search.py {trial_name}`. 
 
 ### New Functionalities (aside from each individual branch, which have their respective changes in their own `README.md`s)
 
 - Saved Searches
-  - The best `brain.nndf` file corresponding to the "most fit" individual each run of `search.py` is automatically saved to `saved_searches/`. Running `python3 viewSavedSearches.py` will run a simulation of each of these saved files on GUI mode. The corresponding `fitness.txt` file is also saved to the same folder.
+  - The best `brain.nndf` file corresponding to the "most fit" individual each run of `search.py` is automatically saved to `saved_searches/brain_{trial_name}.nndf`. Running `python3 viewSavedSearches.py` will run a simulation of each of these saved files on GUI mode. The corresponding `fitness_{trial_name}.txt` file is also saved to the same folder.
 - Up up and Away
   - This branch has had the fitness function modified to match the "up up and away" sample project from the reddit thread. There are 3 saved searches in the `saved_searches/` folder.
 
