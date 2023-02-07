@@ -10,6 +10,7 @@ and installing the requirements locally with `pip3 -r requirements.txt`.
 I experimented with a couple of the final project ideas in the reddit thread, they can be found in each of the branches below:
 - Up up and Away (this branch!)
 - Marching to the beat (marchingToTheBeat)
+- Maximizing bounce airtime (wings) [the main thing I did]
 
 In each of these branches, the experiment can be run with `python3 search.py {trial_name}`. 
 
