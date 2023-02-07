@@ -12,5 +12,5 @@ numMotorNeurons = 7
 dataPath = "data/"
 savedPath = "saved_searches/"
 
-numberOfGenerations = 50
-populationSize = 10
+numberOfGenerations = 70
+populationSize = 20
