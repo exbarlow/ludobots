@@ -2,6 +2,7 @@ from solution import SOLUTION
 import constants as c
 import copy
 import os
+import time
 class PARALLEL_HILL_CLIMBER:
     def __init__(self):
         # self.parent = SOLUTION()
@@ -46,7 +47,7 @@ class PARALLEL_HILL_CLIMBER:
 
     def Select(self):
         for parentID in self.parents:
-            if self.parents[parentID].fitness > self.children[parentID].fitness:
+            if self.parents[parentID].fitness < self.children[parentID].fitness:
                 self.parents[parentID] = self.children[parentID]
 
     def Print(self):
@@ -56,8 +57,12 @@ class PARALLEL_HILL_CLIMBER:
         # print(self.parent.fitness,self.child.fitness)
 
     def Show_Best(self):
-        min(self.parents.values()).Start_Simulation("GUI",isBest=True)
-        exit()
+        bestParent = max(self.parents.values())
+        bestParent.Start_Simulation("GUI",save=True)
+        fitnessFileName = f"fitness{bestParent.myID}.txt"
+        while not os.path.exists(fitnessFileName):
+            time.sleep(1)
+        os.system(f"mv {fitnessFileName} {c.savedPath}{fitnessFileName}")
 
 
 

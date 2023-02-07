@@ -85,10 +85,11 @@ class SOLUTION:
         pyrosim.End()
 
 
-    def Create_Brain(self,isBest):
+    def Create_Brain(self,save):
+
         folder = ""
-        if isBest:
-            folder = "saved_searches/"
+        if save:
+            folder = c.savedPath
         pyrosim.Start_NeuralNetwork(f"{folder}brain{self.myID}.nndf")
 
         i = 0
@@ -108,16 +109,21 @@ class SOLUTION:
         pyrosim.End()
 
 
-    def Start_Simulation(self,directOrGUI,isBest=False):
+    def Start_Simulation(self,directOrGUI,save=False):
         if directOrGUI != "DIRECT" and directOrGUI != "GUI":
             print("parameter must be DIRECT or GUI")
             exit()
             
         # self.Create_World()
         # self.Create_Body()
-        self.Create_Brain(isBest=isBest)
-        os.system(f"python3 simulate.py {directOrGUI} {self.myID} 2&>erroutput & ")
-
+        self.Create_Brain(save=False)
+        runAsync = "&"
+        if save:
+            runAsync = ""
+            self.Create_Brain(save=True)
+        
+        os.system(f"python3 simulate.py {directOrGUI} {self.myID} 2&>erroutput {runAsync}")
+ 
     def Wait_For_Simulation_To_End(self):
         fitnessFileName = f"fitness{self.myID}.txt"
         while not os.path.exists(fitnessFileName):
