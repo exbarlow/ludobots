@@ -127,10 +127,16 @@ class SOLUTION:
     def Wait_For_Simulation_To_End(self):
         fitnessFileName = f"fitness{self.myID}.txt"
         while not os.path.exists(fitnessFileName):
-            time.sleep(1)
-        f = open(fitnessFileName,"r")
-        self.fitness = float(f.read())
-        f.close()
+            time.sleep(0.2)
+        while True:
+            f = open(fitnessFileName,"r")
+            content = f.read()
+            if content != "":
+                self.fitness = float(content)
+                f.close()
+                break
+            else:
+                f.close()
         time.sleep(0.03)
         os.system(f"rm {fitnessFileName}")
 
