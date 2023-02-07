@@ -60,10 +60,17 @@ class PARALLEL_HILL_CLIMBER:
         bestParent = max(self.parents.values())
         bestParent.Start_Simulation("GUI",save=True)
 
+        i = 0
+        foundFitness = True
         while not os.path.exists(f"fitness{bestParent.myID}.txt"):
             time.sleep(0.25)
+            i += 0.25
+            if i > 5:
+                foundFitness = False
+                break
 
-        os.system(f"mv fitness{bestParent.myID}.txt {c.savedPath}fitness_{saveName}.txt")
+        if foundFitness:
+            os.system(f"mv fitness{bestParent.myID}.txt {c.savedPath}fitness_{saveName}.txt")
         os.system(f"mv {c.savedPath}brain{bestParent.myID}.nndf {c.savedPath}brain_{saveName}.nndf")
 
 

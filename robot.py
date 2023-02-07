@@ -5,10 +5,12 @@ import pyrosim.pyrosim as pyrosim
 from pyrosim.neuralNetwork import NEURAL_NETWORK
 import os
 import constants as c
+import numpy
 class ROBOT:
     def __init__(self,solutionID,nndfName = ""):
         self.robotId = p.loadURDF("body.urdf")
         self.solutionID = solutionID
+        self.fitness = 0
         pyrosim.Prepare_To_Simulate(self.robotId)
         self.Prepare_To_Sense()
         self.Prepare_To_Act()
@@ -32,6 +34,10 @@ class ROBOT:
         for jointName in pyrosim.jointNamesToIndices:
             self.motors[str(jointName)] = MOTOR(jointName)
 
+    def Set_Fitness(self,fitness):
+        self.fitness =fitness
+
+
     def Act(self):
         for neuronName in self.nn.Get_Neuron_Names():
             if self.nn.Is_Motor_Neuron(neuronName):
@@ -48,12 +54,14 @@ class ROBOT:
         # self.nn.Print()
 
     def Get_Fitness(self):
-        basePositionAndOrientation = p.getBasePositionAndOrientation(self.robotId)
-        basePosition = basePositionAndOrientation[0]
-        zCoordinateOfLinkZero = basePosition[2]
-        f = open(f"tmp{self.solutionID}.txt","w")
-        f.write(str(zCoordinateOfLinkZero))
+        # basePositionAndOrientation = p.getBasePositionAndOrientation(self.robotId)
+        # basePosition = basePositionAndOrientation[0]
+        # yCoordinateOfLinkZero = basePosition[1]
+
+        with open(f"tmp{self.solutionID}.txt","w") as f:
+            f.write(str(self.fitness))
         os.system(f"mv tmp{self.solutionID}.txt fitness{self.solutionID}.txt")
+
         # print("")
         # print(xCoordinateOfLinkZero)
         

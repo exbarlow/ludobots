@@ -5,12 +5,12 @@ timeSteps = 1000
 sleepTime = 1/10000
 maxForce = 250
 
-motorJointRange = 0.4
-numSensorNeurons = 8
-numMotorNeurons = 7
+motorJointRange = 1
+numSensorNeurons = 7
+numMotorNeurons = 6
 
 dataPath = "data/"
 savedPath = "saved_searches/"
 
-numberOfGenerations = 70
-populationSize = 20
+numberOfGenerations = 50
+populationSize = 30
