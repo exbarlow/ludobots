@@ -7,6 +7,13 @@ import constants as c
 from simulation import SIMULATION
 
 def Start_Saved_Simulation(nndfName:str):
+    """
+    Runs a simulation of the given brain file.
+
+    @nndfName: The name of the brain file to simulate.
+
+    @return: None
+    """
     startTime = datetime.now()
     print(f"Started simulation of {nndfName} at:",startTime.time())
     simulation = SIMULATION("GUI",-1,nndfName)
