@@ -1,5 +1,5 @@
 from simulation import SIMULATION
-from solution import SOLUTION
+
 import sys
 
 directOrGUI = sys.argv[1]

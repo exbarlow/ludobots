@@ -12,6 +12,20 @@ class SOLUTION:
         self.jointNames = []
         self.myID = sol_id
         self.Create_Weights()
+        # temporary
+        self.jointNames.append("MiddleBack_Back")
+        self.linkNames.append("Back")
+        self.linkNames.append("Center")
+        self.jointNames.append("Center_MiddleFront")
+        self.linkNames.append("MiddleFront")
+        self.jointNames.append("MiddleFront_Front")
+        self.linkNames.append("Front")
+        self.jointNames.append("Center_MiddleBack")
+        self.linkNames.append("MiddleBack")
+        self.jointNames.append("Center_RightWingConnector")
+        self.linkNames.append("RightWingConnector")
+        self.jointNames.append("Center_LeftWingConnector")
+        self.linkNames.append("LeftWingConnector")
         
 
     def __lt__(self,other):
@@ -21,22 +35,22 @@ class SOLUTION:
         numLayers = len(c.hiddenNeurons)
         # If there is no hidden layer, just create weights from sensors to motors
         if numLayers == 0:
-            self.weights[0] = np.random.rand(c.numSensorNeurons,c.numMotorNeurons)
+            self.weights[0] = np.random.rand(c.numSensorNeurons,c.numMotorNeurons) * 2 - 1
         # If there is only one hidden layer, create weights from sensors to first hidden layer and from first hidden layer to motors
         elif numLayers == 1:
-            self.weights[0] = np.random.rand(c.numSensorNeurons,c.hiddenNeurons[0])
-            self.weights[1] = np.random.rand(c.hiddenNeurons[0],c.numMotorNeurons)
+            self.weights[0] = np.random.rand(c.numSensorNeurons,c.hiddenNeurons[0]) * 2 - 1
+            self.weights[1] = np.random.rand(c.hiddenNeurons[0],c.numMotorNeurons) * 2 - 1
         else:
         # Else, we will create weights from sensors to first hidden layer, 
         # from last hidden layer to motors, 
         # and from each hidden layer to the next
             for layer in range(numLayers):
                 if layer == 0:
-                    self.weights[layer] = np.random.rand(c.numSensorNeurons,c.hiddenNeurons[layer])
+                    self.weights[layer] = np.random.rand(c.numSensorNeurons,c.hiddenNeurons[layer]) * 2 - 1
                 elif layer == numLayers - 1:
-                    self.weights[layer] = np.random.rand(c.hiddenNeurons[layer-1],c.numMotorNeurons)
+                    self.weights[layer] = np.random.rand(c.hiddenNeurons[layer-1],c.numMotorNeurons) * 2 - 1
                 else:
-                    self.weights[layer] = np.random.rand(c.hiddenNeurons[layer-1],c.hiddenNeurons[layer])
+                    self.weights[layer] = np.random.rand(c.hiddenNeurons[layer-1],c.hiddenNeurons[layer]) * 2 - 1
 
     def Create_World(self):
         pyrosim.Start_SDF("world.sdf")
@@ -82,21 +96,6 @@ class SOLUTION:
             pyrosim.End()
 
 
-        self.jointNames.append("MiddleBack_Back")
-        self.linkNames.append("Back")
-        self.linkNames.append("Center")
-        self.jointNames.append("Center_MiddleFront")
-        self.linkNames.append("MiddleFront")
-        self.jointNames.append("MiddleFront_Front")
-        self.linkNames.append("Front")
-        self.jointNames.append("Center_MiddleBack")
-        self.linkNames.append("MiddleBack")
-        self.jointNames.append("Center_RightWingConnector")
-        self.linkNames.append("RightWingConnector")
-        self.jointNames.append("Center_LeftWingConnector")
-        self.linkNames.append("LeftWingConnector")
-
-
     def Create_Brain(self,save:bool):
         """ 
         Creates a neural network for the individual, saving it in a temporary .nndf file.
@@ -117,7 +116,7 @@ class SOLUTION:
         folder = ""
         if save:
             folder = c.savedPath
-        pyrosim.Start_NeuralNetwork(f"{folder}brain{self.myID}.nndf")
+        pyrosim.Start_NeuralNetwork(f"{folder}brain/{self.myID}.nndf")
 
         # send a sensor neuron to each link
         i = 0
@@ -186,7 +185,7 @@ class SOLUTION:
         os.system(f"python3 simulate.py {directOrGUI} {self.myID} 2&>output {runAsync}")
  
     def Wait_For_Simulation_To_End(self):
-        fitnessFileName = f"fitness{self.myID}.txt"
+        fitnessFileName = f"fitness/{self.myID}.txt"
         while not os.path.exists(fitnessFileName):
             time.sleep(0.2)
         while True:
@@ -202,10 +201,11 @@ class SOLUTION:
         os.system(f"rm {fitnessFileName}")
 
     def Mutate(self):
-        rows, cols = self.weights.shape
-        randomRow = random.randint(0,rows-1)
-        randomColumn = random.randint(0,cols-1)
-        self.weights[randomRow,randomColumn] = random.random() * 2 - 1
+        for layer, weights in self.weights.items():
+            for i in range(weights.shape[0]):
+                for j in range(weights.shape[1]):
+                    if random.random() < c.mutationRate:
+                        self.weights[layer][i,j] += self.weights[layer][i,j] * random.gauss(0,1) * c.mutationPower
 
     def Set_ID(self,new_id):
         self.myID = new_id

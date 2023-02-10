@@ -1,8 +1,8 @@
 import numpy as np
 import constants as c
-import math
 import pyrosim.pyrosim as pyrosim
 import pybullet as p
+
 class MOTOR:
     def __init__(self,jointName) -> None:
         self.jointName = jointName

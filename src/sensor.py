@@ -2,6 +2,7 @@ import numpy as np
 import constants as c
 import pyrosim.pyrosim as pyrosim
 import math
+
 class SENSOR:
     def __init__(self,linkName):
         self.linkName = linkName

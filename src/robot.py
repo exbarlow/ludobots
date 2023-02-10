@@ -5,7 +5,7 @@ import pyrosim.pyrosim as pyrosim
 from pyrosim.neuralNetwork import NEURAL_NETWORK
 import os
 import constants as c
-import numpy
+
 class ROBOT:
     def __init__(self,solutionID,nndfName = ""):
         self.robotId = p.loadURDF("body.urdf")
@@ -15,8 +15,8 @@ class ROBOT:
         self.Prepare_To_Sense()
         self.Prepare_To_Act()
         if nndfName == "":
-            self.nn = NEURAL_NETWORK(f"brain{self.solutionID}.nndf")
-            os.system(f"rm brain{self.solutionID}.nndf")
+            self.nn = NEURAL_NETWORK(f"brain/{self.solutionID}.nndf")
+            os.system(f"rm brain/{self.solutionID}.nndf")
         else:
             self.nn = NEURAL_NETWORK(nndfName)
 
@@ -60,7 +60,7 @@ class ROBOT:
 
         with open(f"tmp{self.solutionID}.txt","w") as f:
             f.write(str(self.fitness))
-        os.system(f"mv tmp{self.solutionID}.txt fitness{self.solutionID}.txt")
+        os.system(f"mv tmp{self.solutionID}.txt fitness/{self.solutionID}.txt")
 
         # print("")
         # print(xCoordinateOfLinkZero)
