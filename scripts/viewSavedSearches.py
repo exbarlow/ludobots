@@ -1,7 +1,10 @@
 import glob
+import sys
+import os
+sys.path.append(os.path.join(os.path.abspath(os.path.dirname(__file__)), '../src'))
 from datetime import datetime
-from ..src.constants import *
-from ..src.simulation import SIMULATION
+import constants as c
+from simulation import SIMULATION
 
 def Start_Saved_Simulation(nndfName:str):
     startTime = datetime.now()
@@ -13,7 +16,7 @@ def Start_Saved_Simulation(nndfName:str):
     print(f"    duration:",str(endTime-startTime))
 
 if __name__ == "__main__":
-    brain_files = glob.glob(f"{savedPath}brain/*.nndf")
+    brain_files = glob.glob(f"{c.savedPath}brain/*.nndf")
     for file in brain_files:
         Start_Saved_Simulation(file)
 

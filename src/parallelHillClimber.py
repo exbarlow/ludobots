@@ -5,8 +5,8 @@ import os
 import time
 class PARALLEL_HILL_CLIMBER:
     def __init__(self):
-        os.system("rm fitness/*.txt")
-        os.system("rm brain/*.nndf")
+        os.system("rm src/tempfiles/fitness/*.txt")
+        os.system("rm src/tempfiles/brain/*.nndf")
         self.parents = {}
         for i in range(c.populationSize):
             self.parents[i] = SOLUTION(i)
@@ -24,16 +24,16 @@ class PARALLEL_HILL_CLIMBER:
         for currentGeneration in range(c.numberOfGenerations):
             if currentGeneration%10 == 0:
                 print("current generation:",currentGeneration)
-            self.Evolve_For_One_Generation(currentGeneration)
+            self.Evolve_For_One_Generation()
 
-    def Evolve_For_One_Generation(self,currentGeneration):
+    def Evolve_For_One_Generation(self):
         self.Spawn()
         self.Mutate(self.children)
         self.Evaluate(self.children)
         self.Select()
         self.Cull_And_Replace()
         self.Reassign_IDs()
-        self.Print_Highest_Fitness()
+        # self.Print_Highest_Fitness()
 
     def Spawn(self):
         self.children = {}
@@ -79,7 +79,7 @@ class PARALLEL_HILL_CLIMBER:
 
         i = 0
         foundFitness = True
-        while not os.path.exists(f"fitness/{bestParent.myID}.txt"):
+        while not os.path.exists(f"src/tempfiles/fitness/{bestParent.myID}.txt"):
             time.sleep(0.25)
             i += 0.25
             if i > 5:
@@ -87,7 +87,7 @@ class PARALLEL_HILL_CLIMBER:
                 break
 
         if foundFitness:
-            os.system(f"mv fitness/{bestParent.myID}.txt {c.savedPath}fitness/{saveName}.txt")
+            os.system(f"mv src/tempfiles/fitness/{bestParent.myID}.txt {c.savedPath}fitness/{saveName}.txt")
         os.system(f"mv {c.savedPath}brain/{bestParent.myID}.nndf {c.savedPath}brain/{saveName}.nndf")
 
 

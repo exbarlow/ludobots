@@ -30,6 +30,7 @@ class SIMULATION:
 
         if fileName != "":
             nameId = p.addUserDebugText(f"File: {fileName}", [-5, -2, 2], textColorRGB=[1, 0, 0], textSize=1.5)
+            
         for i in range(c.timeSteps):
             p.stepSimulation()
             self.robot.Sense(i)
@@ -41,6 +42,7 @@ class SIMULATION:
                     lastBounce = i
                 else:
                     bounce = i - lastBounce
+                    lastBounce = i
                     largestBounce = max(bounce,largestBounce)
                 
             self.robot.Set_Fitness(largestBounce)

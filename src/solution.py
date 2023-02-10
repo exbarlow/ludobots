@@ -53,7 +53,7 @@ class SOLUTION:
                     self.weights[layer] = np.random.rand(c.hiddenNeurons[layer-1],c.hiddenNeurons[layer]) * 2 - 1
 
     def Create_World(self):
-        pyrosim.Start_SDF("world.sdf")
+        pyrosim.Start_SDF("src/robotfiles/world.sdf")
         pyrosim.End()
 
     def Create_Body(self,save:bool):
@@ -66,7 +66,7 @@ class SOLUTION:
         Returns: None
         """
         if save:
-            pyrosim.Start_URDF("body.urdf")
+            pyrosim.Start_URDF("src/robotfiles/body.urdf")
 
             pyrosim.Send_Cube(name="Center",pos=[0,0,10],size=[0.5,0.5,0.5])
             
@@ -113,10 +113,12 @@ class SOLUTION:
             return c.hiddenNeurons[layer] + Get_Cumulative_Hidden_Neuron_Count(layer-1)
 
         # if save == True, send the brain to the folder specified by c.savedPath
-        folder = ""
         if save:
-            folder = c.savedPath
-        pyrosim.Start_NeuralNetwork(f"{folder}brain/{self.myID}.nndf")
+            filePath = f"{c.savedPath}brain/{self.myID}.nndf"
+        else:
+            filePath = f"src/tempfiles/brain/{self.myID}.nndf"
+
+        pyrosim.Start_NeuralNetwork(filePath)
 
         # send a sensor neuron to each link
         i = 0
@@ -181,11 +183,11 @@ class SOLUTION:
         if save:
             runAsync = ""
             self.Create_Brain(save=True)
-        
-        os.system(f"python3 simulate.py {directOrGUI} {self.myID} 2&>output {runAsync}")
+         
+        os.system(f"python3 src/simulate.py {directOrGUI} {self.myID} 2&>output {runAsync}")
  
     def Wait_For_Simulation_To_End(self):
-        fitnessFileName = f"fitness/{self.myID}.txt"
+        fitnessFileName = f"src/tempfiles/fitness/{self.myID}.txt"
         while not os.path.exists(fitnessFileName):
             time.sleep(0.2)
         while True:

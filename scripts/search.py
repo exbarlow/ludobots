@@ -1,7 +1,10 @@
 import sys
+import os
+sys.path.append(os.path.join(os.path.abspath(os.path.dirname(__file__)), '../src'))
 from parallelHillClimber import PARALLEL_HILL_CLIMBER
 from solution import SOLUTION
 from datetime import datetime
+
 
 saveName = sys.argv[1]
 
