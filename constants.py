@@ -8,9 +8,11 @@ maxForce = 250
 motorJointRange = 1
 numSensorNeurons = 7
 numMotorNeurons = 6
+## dictionary of hidden layer neurons, key is layer number, value is number of neurons in that layer
+hiddenNeurons = {}
 
 dataPath = "data/"
 savedPath = "saved_searches/"
 
-numberOfGenerations = 50
-populationSize = 30
+numberOfGenerations = 1
+populationSize = 1

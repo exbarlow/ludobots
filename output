@@ -1,20 +1,3 @@
 pybullet build time: Feb  6 2023 00:12:52
-Version = 4.1 Metal - 83
-Vendor = Apple
-Renderer = Apple M1 Pro
-b3Printf: Selected demo: Physics Server
-startThreads creating 1 threads.
-starting thread 0
-started thread 0 
-MotionThreadFunc thread started
-b3Printf: b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
-
-b3Printf: expected a world element, continuing without it.
-numActiveThreads = 0
-stopping threads
-destroy semaphore
-semaphore destroyed
-Thread with taskId 0 exiting
-Thread TERMINATED
-destroy main semaphore
-main semaphore destroyed
+b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.

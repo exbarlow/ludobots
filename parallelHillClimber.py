@@ -3,9 +3,9 @@ import constants as c
 import copy
 import os
 import time
+from typing import Dict
 class PARALLEL_HILL_CLIMBER:
     def __init__(self):
-        # self.parent = SOLUTION()
         os.system("rm fitness*.txt")
         os.system("rm brain*.nndf")
         self.parents = {}
