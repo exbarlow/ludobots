@@ -12,4 +12,4 @@ def runner(numTrials):
         os.system(f"python3 scripts/search.py trial{i}")
 
 if __name__ == "__main__":
-    runner(1)
+    runner(3)

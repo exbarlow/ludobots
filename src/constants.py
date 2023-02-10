@@ -18,4 +18,4 @@ dataPath = "data/"
 savedPath = "saved_searches/"
 
 numberOfGenerations = 30
-populationSize = 50
+populationSize = 30
