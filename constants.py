@@ -9,7 +9,7 @@ motorJointRange = 1
 numSensorNeurons = 7
 numMotorNeurons = 6
 ## dictionary of hidden layer neurons, key is layer number, value is number of neurons in that layer
-hiddenNeurons = {}
+hiddenNeurons = {0:8,1:4,2:2}
 
 dataPath = "data/"
 savedPath = "saved_searches/"

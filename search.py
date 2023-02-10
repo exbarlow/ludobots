@@ -7,7 +7,7 @@ saveName = sys.argv[1]
 
 dummy = SOLUTION(-1)
 dummy.Create_World()
-dummy.Create_Body()
+dummy.Create_Body(save=True)
 startTime = datetime.now()
 print(f"Search starting at:",startTime.time())
 phc = PARALLEL_HILL_CLIMBER()
