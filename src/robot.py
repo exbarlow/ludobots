@@ -18,7 +18,8 @@ class ROBOT:
             self.nn = NEURAL_NETWORK(f"src/tempfiles/brain/{self.solutionID}.nndf")
             os.system(f"rm src/tempfiles/brain/{self.solutionID}.nndf")
         else:
-            self.nn = NEURAL_NETWORK(nndfName)
+            
+            self.nn = NEURAL_NETWORK(f"{c.savedPath}brain/{nndfName}.nndf")
 
     def Prepare_To_Sense(self):
         self.sensors = {}

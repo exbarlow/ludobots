@@ -75,7 +75,7 @@ class PARALLEL_HILL_CLIMBER:
     def Show_Best(self,saveName):
         bestParent = max(self.parents.values())
         self.Print_Highest_Fitness()
-        bestParent.Start_Simulation("GUI",save=True)
+        bestParent.Start_Simulation("DIRECT",save=True)
 
         i = 0
         foundFitness = True
@@ -87,8 +87,19 @@ class PARALLEL_HILL_CLIMBER:
                 break
 
         if foundFitness:
-            os.system(f"mv src/tempfiles/fitness/{bestParent.myID}.txt {c.savedPath}fitness/{saveName}.txt")
-        os.system(f"mv {c.savedPath}brain/{bestParent.myID}.nndf {c.savedPath}brain/{saveName}.nndf")
+            # move the fitness to saved_searches
+            os.system(f"mv src/tempfiles/fitness/{bestParent.myID}.txt {c.savedPath}fitness/{bestParent.myID}.txt")
+
+            bestParent.Start_Simulation("GUI",save=True)
+
+            # rename the saved files to the provided saveName
+            os.system(f"mv {c.savedPath}fitness/{bestParent.myID}.txt {c.savedPath}fitness/{saveName}.txt")
+            os.system(f"mv {c.savedPath}brain/{bestParent.myID}.nndf {c.savedPath}brain/{saveName}.nndf")
+
+        else:
+            print("Error finding fitness file. TODO: test is this is m1 related.")
+            os.sytem(f"rm {c.savedPath}brain/{bestParent.myID}.nndf")
+
 
 
 
