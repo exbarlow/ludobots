@@ -5,8 +5,6 @@ sleepTime = 1/10000
 maxForce = 250
 
 motorJointRange = 1
-numSensorNeurons = 7
-numMotorNeurons = 6
 
 # dictionary of hidden layer neurons, key is layer number, value is number of neurons in that layer
 hiddenNeurons = {0:6}
@@ -16,6 +14,14 @@ cullSize = 5
 
 dataPath = "data/"
 savedPath = "saved_searches/"
+tempfilePath = "src/tempfiles/"
 
 numberOfGenerations = 30
 populationSize = 30
+
+# relating to random snake generation -- minLinks should always be >= 2
+minLinks = 2
+maxLinks = 10
+sensorProportion = 0.3
+minLinkSize = 0.25
+maxLinkSize = 2

@@ -7,19 +7,20 @@ import os
 import constants as c
 
 class ROBOT:
-    def __init__(self,solutionID,nndfName = ""):
-        self.robotId = p.loadURDF("src/robotfiles/body.urdf")
+    def __init__(self,solutionID,savedName = ""):
         self.solutionID = solutionID
         self.fitness = 0
         pyrosim.Prepare_To_Simulate(self.robotId)
         self.Prepare_To_Sense()
         self.Prepare_To_Act()
-        if nndfName == "":
-            self.nn = NEURAL_NETWORK(f"src/tempfiles/brain/{self.solutionID}.nndf")
-            os.system(f"rm src/tempfiles/brain/{self.solutionID}.nndf")
+        if savedName == "":
+            self.nn = NEURAL_NETWORK(f"{c.tempfilePath}/brain/{self.solutionID}.nndf")
+            self.robotId = p.loadURDF(f"{c.tempfilePath}/body.urdf")
+            os.system(f"rm {c.tempfilePath}/brain/{self.solutionID}.nndf")
+            os.system(f"rm {c.tempfilePath}/body/{self.solutionID}.urdf")
         else:
-            
-            self.nn = NEURAL_NETWORK(f"{c.savedPath}brain/{nndfName}.nndf")
+            self.nn = NEURAL_NETWORK(f"{c.savedPath}brain/{savedName}.nndf")
+            self.robotID = p.loadURDF(f"{c.savedPath}/body/{self.solutionID}.urdf")
 
     def Prepare_To_Sense(self):
         self.sensors = {}
@@ -55,9 +56,9 @@ class ROBOT:
 
     def Get_Fitness(self):
 
-        with open(f"tmp{self.solutionID}.txt","w") as f:
+        with open(f"{c.tempfilePath}tmp{self.solutionID}.txt","w") as f:
             f.write(str(self.fitness))
-        os.system(f"mv tmp{self.solutionID}.txt src/tempfiles/fitness/{self.solutionID}.txt")
+        os.system(f"mv {c.tempfilePath}tmp{self.solutionID}.txt {c.tempfilePath}fitness/{self.solutionID}.txt")
         
 
    

@@ -5,8 +5,8 @@ import os
 import time
 class PARALLEL_HILL_CLIMBER:
     def __init__(self):
-        os.system("rm src/tempfiles/fitness/*.txt")
-        os.system("rm src/tempfiles/brain/*.nndf")
+        os.system(f"rm {c.tempfilePath}/fitness/*.txt")
+        os.system(f"rm {c.tempfilePath}/brain/*.nndf")
         self.parents = {}
         for i in range(c.populationSize):
             self.parents[i] = SOLUTION(i)
@@ -138,7 +138,7 @@ class PARALLEL_HILL_CLIMBER:
 
         i = 0
         foundFitness = True
-        while not os.path.exists(f"src/tempfiles/fitness/{bestParent.myID}.txt"):
+        while not os.path.exists(f"{c.tempfilePath}/fitness/{bestParent.myID}.txt"):
             time.sleep(0.25)
             i += 0.25
             if i > 5:
@@ -147,7 +147,7 @@ class PARALLEL_HILL_CLIMBER:
 
         if foundFitness:
             # move the fitness to saved_searches
-            os.system(f"mv src/tempfiles/fitness/{bestParent.myID}.txt {c.savedPath}fitness/{bestParent.myID}.txt")
+            os.system(f"mv {c.tempfilePath}/fitness/{bestParent.myID}.txt {c.savedPath}fitness/{bestParent.myID}.txt")
 
             bestParent.Start_Simulation("GUI",save=True)
 
