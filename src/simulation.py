@@ -38,7 +38,8 @@ class SIMULATION:
         # if the fitnessFile and brainFile exist add text to the screen with the file and the fitness
         fitnessFile = f"{c.savedPath}fitness/{self.robot.solutionID}.txt"
         brainFile = f"{c.savedPath}brain/{self.robot.solutionID}.nndf"
-        if os.path.exists(fitnessFile) and os.path.exists(brainFile):
+        bodyFile = f"{c.savedPath}body/{self.robot.solutionID}.urdf"
+        if os.path.exists(fitnessFile) and os.path.exists(brainFile) and os.path.exists(bodyFile):
             # read the fitness into a variable
             with open(fitnessFile,"r") as f:
                 fitness = f.read()

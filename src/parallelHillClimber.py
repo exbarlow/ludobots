@@ -5,8 +5,9 @@ import os
 import time
 class PARALLEL_HILL_CLIMBER:
     def __init__(self):
-        os.system(f"rm {c.tempfilePath}/fitness/*.txt")
-        os.system(f"rm {c.tempfilePath}/brain/*.nndf")
+        os.system(f"rm {c.tempfilePath}fitness/*.txt")
+        os.system(f"rm {c.tempfilePath}brain/*.nndf")
+        os.system(f"rm {c.tempfilePath}body/*.urdf")
         self.parents = {}
         for i in range(c.populationSize):
             self.parents[i] = SOLUTION(i)
@@ -134,11 +135,13 @@ class PARALLEL_HILL_CLIMBER:
         """
         bestParent = max(self.parents.values())
         self.Print_Highest_Fitness()
-        bestParent.Start_Simulation("DIRECT",save=True)
+        bestParent.Start_Simulation("DIRECT",save=False)
+        # save fitness so that we can annotate it when the simulation is run in GUI mode
+        bestParent.Wait_For_Simulation_To_End(save=True)
 
         i = 0
         foundFitness = True
-        while not os.path.exists(f"{c.tempfilePath}/fitness/{bestParent.myID}.txt"):
+        while not os.path.exists(f"{c.savedPath}fitness/{bestParent.myID}.txt"):
             time.sleep(0.25)
             i += 0.25
             if i > 5:
@@ -146,18 +149,19 @@ class PARALLEL_HILL_CLIMBER:
                 break
 
         if foundFitness:
-            # move the fitness to saved_searches
-            os.system(f"mv {c.tempfilePath}/fitness/{bestParent.myID}.txt {c.savedPath}fitness/{bestParent.myID}.txt")
-
             bestParent.Start_Simulation("GUI",save=True)
+            # don't save fitness this time because we already saved it
+            bestParent.Wait_For_Simulation_To_End(save=False)
 
             # rename the saved files to the provided saveName
             os.system(f"mv {c.savedPath}fitness/{bestParent.myID}.txt {c.savedPath}fitness/{saveName}.txt")
             os.system(f"mv {c.savedPath}brain/{bestParent.myID}.nndf {c.savedPath}brain/{saveName}.nndf")
+            os.system(f"mv {c.savedPath}body/{bestParent.myID}.urdf {c.savedPath}body/{saveName}.urdf")
 
         else:
             print("Error finding fitness file. TODO: test is this is m1 related.")
-            os.sytem(f"rm {c.savedPath}brain/{bestParent.myID}.nndf")
+            os.system(f"rm {c.savedPath}brain/{bestParent.myID}.nndf")
+            os.system(f"rm {c.savedPath}body/{bestParent.myID}.urdf")
 
 
 

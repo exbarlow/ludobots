@@ -1,7 +1,7 @@
 env/*
 env
 /fitness.*txt
-erroutput
+output.txt
 src/tempfiles/brain/*
 src/tempfiles/body/*
 src/tempfiles/fitness/*

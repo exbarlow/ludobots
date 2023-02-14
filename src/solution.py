@@ -3,6 +3,7 @@ import pyrosim.pyrosim as pyrosim
 import os
 import random
 import constants as c
+from simulation import SIMULATION
 import time
 
 class SOLUTION:
@@ -20,12 +21,10 @@ class SOLUTION:
         self.linksToLengths = {}
         for link in self.linkNames:
             self.linksToLengths[link] = np.random.uniform(c.minLinkSize,c.maxLinkSize,(3,))
-        print(self.linksToLengths)
 
         self.weights = dict()
         # create random weights dependent on number of neurons
         self.Create_Weights()
-        print(self.weights)
         
 
     def __lt__(self,other):
@@ -69,7 +68,7 @@ class SOLUTION:
         if save:
             filePath = f"{c.savedPath}body/{self.myID}.urdf"
         else:
-            filePath = f"{c.tempfilePath}/body/{self.myID}.urdf"
+            filePath = f"{c.tempfilePath}body/{self.myID}.urdf"
 
         pyrosim.Start_URDF(filePath)
 
@@ -114,7 +113,7 @@ class SOLUTION:
         if save:
             filePath = f"{c.savedPath}brain/{self.myID}.nndf"
         else:
-            filePath = f"{c.tempfilePath}/brain/{self.myID}.nndf"
+            filePath = f"{c.tempfilePath}brain/{self.myID}.nndf"
 
         pyrosim.Start_NeuralNetwork(filePath)
         numMotorNeurons = self.numLinks - 1
@@ -176,18 +175,20 @@ class SOLUTION:
             print("parameter must be DIRECT or GUI")
             exit()
         
-        self.Create_Body(save=False)
-        self.Create_Brain(save=False)
-        runAsync = "&"
         if save:
-            runAsync = ""
+            # when save is True, we don't need to run async, so we can just run the simulation here
             self.Create_Brain(save=True)
             self.Create_Body(save=True)
-         
-        os.system(f"python3 src/simulate.py {directOrGUI} {self.myID} 2&>output {runAsync}")
+            simulation = SIMULATION(directOrGUI,self.myID,savedName=str(self.myID))
+            simulation.Run()
+            simulation.Get_Fitness()
+        else:
+            self.Create_Body(save=False)
+            self.Create_Brain(save=False)
+            os.system(f"python3 src/simulate.py {directOrGUI} {self.myID} 2&>output.txt &")
  
-    def Wait_For_Simulation_To_End(self):
-        fitnessFileName = f"{c.tempfilePath}/fitness/{self.myID}.txt"
+    def Wait_For_Simulation_To_End(self,save=False):
+        fitnessFileName = f"{c.tempfilePath}fitness/{self.myID}.txt"
         while not os.path.exists(fitnessFileName):
             time.sleep(0.2)
         while True:
@@ -200,7 +201,10 @@ class SOLUTION:
             else:
                 f.close()
         time.sleep(0.03)
-        os.system(f"rm {fitnessFileName}")
+        if save:
+            os.system(f"mv {fitnessFileName} {c.savedPath}fitness/{self.myID}.txt")
+        else:
+            os.system(f"rm {fitnessFileName}")
 
     def Mutate(self):
         for layer, weights in self.weights.items():
