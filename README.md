@@ -31,7 +31,7 @@ and installing the requirements locally with `pip3 -r requirements.txt`.
     - this is rounded to an integer number of links (minimum 1)
     - the links selected to contain a sensor are colored green
 - 4 example searches
-  - in `saved_searches/` there are 4 saved trials. The fitness function is to maximize highest jump height, though there is no real evolution so these are just randomly selected as the best from independent random trials. My personal favorite is `dyanmic_trial1` because it's actually doing the worm.
+  - in `saved_searches/` there are 4 saved trials. The fitness function is to maximize highest jump height, though there is no real evolution so these are just randomly selected as the best from independent random trials. My personal favorite is `dynamic_trial1` because it's actually doing the worm.
   
 
 
