@@ -8,6 +8,7 @@ import time
 
 class SOLUTION:
     def __init__(self,sol_id):
+        #!! HUGE FUTURE ISSUE: everything gets rerandomized each generation => need to fix this!!
         self.myID = sol_id
         # randomize number of links
         self.numLinks = np.random.randint(c.minLinks,c.maxLinks)
@@ -24,6 +25,7 @@ class SOLUTION:
 
         self.sensorLinks = set()
         self.Get_Sensor_Links()
+
         self.weights = dict()
         # create random weights dependent on number of neurons
         self.Create_Weights()
@@ -58,13 +60,14 @@ class SOLUTION:
 
     def Create_Weights(self):
         numLayers = len(c.hiddenNeurons)
+        numSensorNeurons = len(self.sensorLinks)
         numMotorNeurons = self.numLinks - 1
         # If there is no hidden layer, just create weights from sensors to motors
         if numLayers == 0:
-            self.weights[0] = np.random.rand(self.numLinks,numMotorNeurons) * 2 - 1
+            self.weights[0] = np.random.rand(numSensorNeurons,numMotorNeurons) * 2 - 1
         # If there is only one hidden layer, create weights from sensors to first hidden layer and from first hidden layer to motors
         elif numLayers == 1:
-            self.weights[0] = np.random.rand(self.numLinks,c.hiddenNeurons[0]) * 2 - 1
+            self.weights[0] = np.random.rand(numSensorNeurons,c.hiddenNeurons[0]) * 2 - 1
             self.weights[1] = np.random.rand(c.hiddenNeurons[0],numMotorNeurons) * 2 - 1
         else:
         # Else, we will create weights from sensors to first hidden layer, 
@@ -72,13 +75,18 @@ class SOLUTION:
         # and from each hidden layer to the next
             for layer in range(numLayers):
                 if layer == 0:
-                    self.weights[layer] = np.random.rand(self.numLinks,c.hiddenNeurons[layer]) * 2 - 1
+                    self.weights[layer] = np.random.rand(numSensorNeurons,c.hiddenNeurons[layer]) * 2 - 1
                 elif layer == numLayers - 1:
                     self.weights[layer] = np.random.rand(c.hiddenNeurons[layer-1],numMotorNeurons) * 2 - 1
                 else:
                     self.weights[layer] = np.random.rand(c.hiddenNeurons[layer-1],c.hiddenNeurons[layer]) * 2 - 1
 
     def Create_World(self):
+        """
+        Creates a world for the simulation. Currently, this is just a blank world.
+
+        @return: None
+        """
         pyrosim.Start_SDF("src/robotfiles/world.sdf")
         pyrosim.End()
 
@@ -157,15 +165,16 @@ class SOLUTION:
 
         pyrosim.Start_NeuralNetwork(filePath)
         numMotorNeurons = self.numLinks - 1
+        numSensorNeurons = len(self.sensorLinks)
+        sensorLinks = list(self.sensorLinks)
 
         # send a sensor neuron to each link
-        i = 0
-        for linkName in self.linkNames:
-            pyrosim.Send_Sensor_Neuron(name=i,linkName=str(linkName))
-            i += 1
+        for linkName in self.sensorLinks:
+            pyrosim.Send_Sensor_Neuron(name=linkName,linkName=str(linkName))
         
         # send all hidden neurons, layer agnostic for now
         totalHiddenNeurons = sum(c.hiddenNeurons.values())
+        i = self.numLinks
         for _ in range(totalHiddenNeurons):
             pyrosim.Send_Hidden_Neuron(name=i)
             i += 1
@@ -177,14 +186,14 @@ class SOLUTION:
 
         # if there are no hidden layers, just send synapses from sensors to motors
         if len(c.hiddenNeurons) == 0:
-            for i in range(self.numLinks):
+            for i in range(numSensorNeurons):
                 for j in range(numMotorNeurons):
-                    pyrosim.Send_Synapse(sourceNeuronName=i, targetNeuronName=self.numLinks+j,weight=self.weights[0][i,j])
+                    pyrosim.Send_Synapse(sourceNeuronName=sensorLinks[i], targetNeuronName=self.numLinks+j,weight=self.weights[0][i,j])
         # if there is only one hidden layer, send synapses from sensors to first hidden layer, then from first hidden layer to motors
         elif len(c.hiddenNeurons) == 1:
-            for i in range(self.numLinks):
+            for i in range(numSensorNeurons):
                 for j in range(c.hiddenNeurons[0]):
-                    pyrosim.Send_Synapse(sourceNeuronName=i, targetNeuronName=self.numLinks+j,weight=self.weights[0][i,j])
+                    pyrosim.Send_Synapse(sourceNeuronName=sensorLinks[i], targetNeuronName=self.numLinks+j,weight=self.weights[0][i,j])
 
             for i in range(c.hiddenNeurons[0]):
                 for j in range(numMotorNeurons):
@@ -194,9 +203,9 @@ class SOLUTION:
             for layer in range(len(c.hiddenNeurons)):
                 # send synapses from sensors to first hidden layer
                 if layer == 0:
-                    for i in range(self.numLinks):
+                    for i in range(numSensorNeurons):
                         for j in range(c.hiddenNeurons[0]):
-                            pyrosim.Send_Synapse(sourceNeuronName=i, targetNeuronName=self.numLinks+j,weight=self.weights[0][i,j])
+                            pyrosim.Send_Synapse(sourceNeuronName=sensorLinks[i], targetNeuronName=self.numLinks+j,weight=self.weights[0][i,j])
                 else:
                     for i in range(c.hiddenNeurons[layer-1]):
                         for j in range(c.hiddenNeurons[layer]):
