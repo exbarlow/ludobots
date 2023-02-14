@@ -11,7 +11,7 @@ class SOLUTION:
         # randomize number of links
         self.numLinks = np.random.randint(c.minLinks,c.maxLinks)
         # fill in link names
-        self.linkNames = [link for link in range(self.numLinks)]
+        self.linkNames = [str(link) for link in range(self.numLinks)]
         # fill in joint names
         self.jointNames = []
         for i in range(self.numLinks-1):
@@ -21,10 +21,11 @@ class SOLUTION:
         for link in self.linkNames:
             self.linksToLengths[link] = np.random.uniform(c.minLinkSize,c.maxLinkSize,(3,))
         print(self.linksToLengths)
-        exit()
+
         self.weights = dict()
         # create random weights dependent on number of neurons
         self.Create_Weights()
+        print(self.weights)
         
 
     def __lt__(self,other):
@@ -68,10 +69,28 @@ class SOLUTION:
         if save:
             filePath = f"{c.savedPath}body/{self.myID}.urdf"
         else:
-            filePath = f"{c.savedPath}/body/{self.myID}.urdf"
+            filePath = f"{c.tempfilePath}/body/{self.myID}.urdf"
 
         pyrosim.Start_URDF(filePath)
 
+        # get the greatest link z size
+        maxHeight = max(self.linksToLengths.values(), key = lambda x: x[2])[2]
+        firstYLength = self.linksToLengths[self.linkNames[0]][1]
+
+        # send the first link and first joint, with absolute position
+        #! joint type and axis are hardcoded for now, don't matter for assignment 6
+        pyrosim.Send_Cube(name=self.linkNames[0],pos=[0,0,maxHeight/2],size=self.linksToLengths[self.linkNames[0]])
+        pyrosim.Send_Joint(name=self.jointNames[0],parent=self.linkNames[0],child=self.linkNames[1],type="revolute",jointAxis="1 0 0",position=[0,firstYLength/2,maxHeight/2])
+
+        # send the middle links and joints, with relative position
+        for i in range(1,self.numLinks-1):
+            yLength = self.linksToLengths[self.linkNames[i]][1]
+            pyrosim.Send_Cube(name=self.linkNames[i],pos=[0,yLength/2,0],size=self.linksToLengths[self.linkNames[i]])
+            pyrosim.Send_Joint(name=self.jointNames[i],parent=self.linkNames[i],child=self.linkNames[i+1],type="revolute",jointAxis="1 0 0",position=[0,yLength/2,0])
+
+        # send the last link with relative position
+        lastYLength = self.linksToLengths[self.linkNames[-1]][1]
+        pyrosim.Send_Cube(name=self.linkNames[-1],pos=[0,lastYLength/2,0],size=self.linksToLengths[self.linkNames[-1]])
         pyrosim.End()
 
 
@@ -103,7 +122,7 @@ class SOLUTION:
         # send a sensor neuron to each link
         i = 0
         for linkName in self.linkNames:
-            pyrosim.Send_Sensor_Neuron(name=i,linkName=linkName)
+            pyrosim.Send_Sensor_Neuron(name=i,linkName=str(linkName))
             i += 1
         
         # send all hidden neurons, layer agnostic for now

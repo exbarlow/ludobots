@@ -1,20 +1,10 @@
 pybullet build time: Feb  6 2023 00:12:52
-Version = 4.1 Metal - 83
-Vendor = Apple
-Renderer = Apple M1 Pro
-b3Printf: Selected demo: Physics Server
-startThreads creating 1 threads.
-starting thread 0
-started thread 0 
-MotionThreadFunc thread started
-b3Printf: b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
-
-b3Printf: expected a world element, continuing without it.
-numActiveThreads = 0
-stopping threads
-Thread with taskId 0 exiting
-Thread TERMINATED
-destroy semaphore
-semaphore destroyed
-destroy main semaphore
-main semaphore destroyed
+b3Warning[examples/Importers/ImportURDFDemo/BulletUrdfImporter.cpp,126]:
+expected a world element, continuing without it.Traceback (most recent call last):
+  File "/Users/elibarlow/Desktop/Winter '23 Classes/Artificial Life (CS 396)/ludobots/src/simulate.py", line 7, in <module>
+    simulation = SIMULATION(directOrGUI,solutionID)
+  File "/Users/elibarlow/Desktop/Winter '23 Classes/Artificial Life (CS 396)/ludobots/src/simulation.py", line 21, in __init__
+    self.robot = ROBOT(solutionID,savedName)
+  File "/Users/elibarlow/Desktop/Winter '23 Classes/Artificial Life (CS 396)/ludobots/src/robot.py", line 13, in __init__
+    pyrosim.Prepare_To_Simulate(self.robotId)
+AttributeError: 'ROBOT' object has no attribute 'robotId'

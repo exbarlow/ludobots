@@ -11,6 +11,7 @@ def Clear_Saved_Searches():
     """
     os.system(f"rm -v {c.savedPath}brain/*")
     os.system(f"rm -v {c.savedPath}fitness/*")
+    os.system(f"rm -v {c.savedPath}body/*")
 
 if __name__ == "__main__":
     Clear_Saved_Searches()

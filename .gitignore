@@ -1,6 +1,7 @@
 env/*
 env
-data/*
-data
 /fitness.*txt
 erroutput
+src/tempfiles/brain/*
+src/tempfiles/body/*
+src/tempfiles/fitness/*

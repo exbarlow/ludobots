@@ -12,7 +12,7 @@ def Start_Saved_Simulation(savedName:str):
     startTime = datetime.now()
     print(f"Started simulation of {savedName} at:",startTime.time())
     simulation = SIMULATION("GUI",-1,savedName)
-    simulation.Run(savedName)
+    simulation.Run()
     endTime = datetime.now()
     print(f"Finished simulation of {savedName} at:",endTime.time())
     print(f"    duration:",str(endTime-startTime))
