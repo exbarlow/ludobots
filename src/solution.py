@@ -22,6 +22,8 @@ class SOLUTION:
         for link in self.linkNames:
             self.linksToLengths[link] = np.random.uniform(c.minLinkSize,c.maxLinkSize,(3,))
 
+        self.sensorLinks = set()
+        self.Get_Sensor_Links()
         self.weights = dict()
         # create random weights dependent on number of neurons
         self.Create_Weights()
@@ -29,6 +31,30 @@ class SOLUTION:
 
     def __lt__(self,other):
         return self.fitness < other.fitness
+
+    def Get_Sensor_Links(self):
+        """
+        Randomly choose which links will have sensors
+
+        @return: None
+        """
+        # get the proportion of links that will have sensors
+        sensorProportion = np.random.uniform(c.minSensorProportion,c.maxSensorProportion)
+        # get the number of links that will have sensors -> will be at least 1
+        numSensorLinks = max(int(sensorProportion * self.numLinks),1)
+        # choose which links will have sensors
+        indices = np.random.choice(self.numLinks,numSensorLinks,replace=False)
+        # add the names of the links that will have sensors to the set of sensor links
+        for index in indices:
+            self.sensorLinks.add(self.linkNames[index])
+        #! DEBUG
+        print("numLinks: ",self.numLinks)
+        print("sensorProportion: ",sensorProportion)
+        print("numSensorLinks: ",numSensorLinks)
+        print("indices: ",indices)
+        print("sensorLinks: ",self.sensorLinks)
+        
+
 
     def Create_Weights(self):
         numLayers = len(c.hiddenNeurons)
@@ -65,6 +91,20 @@ class SOLUTION:
 
         Returns: None
         """
+
+        def Get_Link_Color(linkName:str):
+            """
+            Gets the color of the link, dependent on whether or not it has a sensor. If it has a sensor, it is green. Otherwise, it is cyan.
+
+            @linkName: the name of the link
+
+            @return: the color of the link
+            """
+            if linkName in self.sensorLinks:
+                return "Green"
+            else:
+                return "Cyan"
+
         if save:
             filePath = f"{c.savedPath}body/{self.myID}.urdf"
         else:
@@ -78,18 +118,18 @@ class SOLUTION:
 
         # send the first link and first joint, with absolute position
         #! joint type and axis are hardcoded for now, don't matter for assignment 6
-        pyrosim.Send_Cube(name=self.linkNames[0],pos=[0,0,maxHeight/2],size=self.linksToLengths[self.linkNames[0]])
+        pyrosim.Send_Cube(name=self.linkNames[0],pos=[0,0,maxHeight/2],size=self.linksToLengths[self.linkNames[0]],color=Get_Link_Color(self.linkNames[0]))
         pyrosim.Send_Joint(name=self.jointNames[0],parent=self.linkNames[0],child=self.linkNames[1],type="fixed",jointAxis="1 0 0",position=[0,firstYLength/2,maxHeight/2])
 
         # send the middle links and joints, with relative position
         for i in range(1,self.numLinks-1):
             yLength = self.linksToLengths[self.linkNames[i]][1]
-            pyrosim.Send_Cube(name=self.linkNames[i],pos=[0,yLength/2,0],size=self.linksToLengths[self.linkNames[i]],color="Green")
+            pyrosim.Send_Cube(name=self.linkNames[i],pos=[0,yLength/2,0],size=self.linksToLengths[self.linkNames[i]],color=Get_Link_Color(self.linkNames[i]))
             pyrosim.Send_Joint(name=self.jointNames[i],parent=self.linkNames[i],child=self.linkNames[i+1],type="fixed",jointAxis="1 0 0",position=[0,yLength,0])
 
         # send the last link with relative position
         lastYLength = self.linksToLengths[self.linkNames[-1]][1]
-        pyrosim.Send_Cube(name=self.linkNames[-1],pos=[0,lastYLength/2,0],size=self.linksToLengths[self.linkNames[-1]])
+        pyrosim.Send_Cube(name=self.linkNames[-1],pos=[0,lastYLength/2,0],size=self.linksToLengths[self.linkNames[-1]],color=Get_Link_Color(self.linkNames[-1]))
         pyrosim.End()
 
 
