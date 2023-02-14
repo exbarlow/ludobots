@@ -49,12 +49,12 @@ class SOLUTION:
         # add the names of the links that will have sensors to the set of sensor links
         for index in indices:
             self.sensorLinks.add(self.linkNames[index])
-        #! DEBUG
-        print("numLinks: ",self.numLinks)
-        print("sensorProportion: ",sensorProportion)
-        print("numSensorLinks: ",numSensorLinks)
-        print("indices: ",indices)
-        print("sensorLinks: ",self.sensorLinks)
+        # # DEBUG
+        # print("numLinks: ",self.numLinks)
+        # print("sensorProportion: ",sensorProportion)
+        # print("numSensorLinks: ",numSensorLinks)
+        # print("indices: ",indices)
+        # print("sensorLinks: ",self.sensorLinks)
         
 
 
@@ -127,13 +127,13 @@ class SOLUTION:
         # send the first link and first joint, with absolute position
         #! joint type and axis are hardcoded for now, don't matter for assignment 6
         pyrosim.Send_Cube(name=self.linkNames[0],pos=[0,0,maxHeight/2],size=self.linksToLengths[self.linkNames[0]],color=Get_Link_Color(self.linkNames[0]))
-        pyrosim.Send_Joint(name=self.jointNames[0],parent=self.linkNames[0],child=self.linkNames[1],type="fixed",jointAxis="1 0 0",position=[0,firstYLength/2,maxHeight/2])
+        pyrosim.Send_Joint(name=self.jointNames[0],parent=self.linkNames[0],child=self.linkNames[1],type="revolute",jointAxis="1 0 0",position=[0,firstYLength/2,maxHeight/2])
 
         # send the middle links and joints, with relative position
         for i in range(1,self.numLinks-1):
             yLength = self.linksToLengths[self.linkNames[i]][1]
             pyrosim.Send_Cube(name=self.linkNames[i],pos=[0,yLength/2,0],size=self.linksToLengths[self.linkNames[i]],color=Get_Link_Color(self.linkNames[i]))
-            pyrosim.Send_Joint(name=self.jointNames[i],parent=self.linkNames[i],child=self.linkNames[i+1],type="fixed",jointAxis="1 0 0",position=[0,yLength,0])
+            pyrosim.Send_Joint(name=self.jointNames[i],parent=self.linkNames[i],child=self.linkNames[i+1],type="revolute",jointAxis="1 0 0",position=[0,yLength,0])
 
         # send the last link with relative position
         lastYLength = self.linksToLengths[self.linkNames[-1]][1]

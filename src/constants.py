@@ -19,8 +19,8 @@ dataPath = "data/"
 savedPath = "saved_searches/"
 tempfilePath = "src/tempfiles/"
 
-numberOfGenerations = 1
-populationSize = 1
+numberOfGenerations = 20
+populationSize = 100
 
 # relating to random snake generation -- minLinks should always be >= 2 !! WILL BREAK IF SET TO 1
 minLinks = 2
