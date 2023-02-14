@@ -84,7 +84,7 @@ class SOLUTION:
         # send the middle links and joints, with relative position
         for i in range(1,self.numLinks-1):
             yLength = self.linksToLengths[self.linkNames[i]][1]
-            pyrosim.Send_Cube(name=self.linkNames[i],pos=[0,yLength/2,0],size=self.linksToLengths[self.linkNames[i]])
+            pyrosim.Send_Cube(name=self.linkNames[i],pos=[0,yLength/2,0],size=self.linksToLengths[self.linkNames[i]],color="Green")
             pyrosim.Send_Joint(name=self.jointNames[i],parent=self.linkNames[i],child=self.linkNames[i+1],type="fixed",jointAxis="1 0 0",position=[0,yLength,0])
 
         # send the last link with relative position
