@@ -159,7 +159,7 @@ class PARALLEL_HILL_CLIMBER:
             os.system(f"mv {c.savedPath}body/{bestParent.myID}.urdf {c.savedPath}body/{saveName}.urdf")
 
         else:
-            print("Error finding fitness file. TODO: test is this is m1 related.")
+            print("Error finding fitness file. TODO: test if this is m1 related.")
             os.system(f"rm {c.savedPath}brain/{bestParent.myID}.nndf")
             os.system(f"rm {c.savedPath}body/{bestParent.myID}.urdf")
 

@@ -19,7 +19,7 @@ tempfilePath = "src/tempfiles/"
 numberOfGenerations = 20
 populationSize = 3
 
-# relating to random snake generation -- minLinks should always be >= 2
+# relating to random snake generation -- minLinks should always be >= 2 !! WILL BREAK IF SET TO 1
 minLinks = 2
 maxLinks = 10
 sensorProportion = 0.3
