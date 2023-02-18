@@ -1,10 +1,10 @@
-from sensor import SENSOR
-from motor import MOTOR
+from src.sensor import SENSOR
+from src.motor import MOTOR
 import pybullet as p
-import pyrosim.pyrosim as pyrosim
-from pyrosim.neuralNetwork import NEURAL_NETWORK
+import src.pyrosim.pyrosim as pyrosim
+from src.pyrosim.neuralNetwork import NEURAL_NETWORK
 import os
-import constants as c
+import src.constants as c
 
 class ROBOT:
     def __init__(self,solutionID,savedName = ""):

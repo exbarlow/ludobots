@@ -1,8 +1,8 @@
-from pyrosim.massurdf    import MASS_URDF
+from src.pyrosim.massurdf    import MASS_URDF
 
-from pyrosim.inertiaurdf import INERTIA_URDF
+from src.pyrosim.inertiaurdf import INERTIA_URDF
 
-from pyrosim.commonFunctions import Save_Whitespace
+from src.pyrosim.commonFunctions import Save_Whitespace
 
 class INERTIAL_URDF:
 

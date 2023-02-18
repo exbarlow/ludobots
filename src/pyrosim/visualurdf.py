@@ -1,6 +1,6 @@
-from pyrosim.material import MATERIAL
+from src.pyrosim.material import MATERIAL
 
-from pyrosim.commonFunctions import Save_Whitespace
+from src.pyrosim.commonFunctions import Save_Whitespace
 
 class VISUAL_URDF: 
 

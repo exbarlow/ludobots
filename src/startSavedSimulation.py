@@ -1,5 +1,5 @@
 from datetime import datetime
-from simulation import SIMULATION
+from src.simulation import SIMULATION
 
 def Start_Saved_Simulation(savedName:str):
     """

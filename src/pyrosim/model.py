@@ -1,4 +1,4 @@
-import pyrosim.commonFunctions as commonFunctions
+import src.pyrosim.commonFunctions as commonFunctions
 
 class MODEL:
 

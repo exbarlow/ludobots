@@ -1,6 +1,6 @@
 import numpy as np
-import constants as c
-import pyrosim.pyrosim as pyrosim
+import src.constants as c
+import src.pyrosim.pyrosim as pyrosim
 import math
 
 class SENSOR:

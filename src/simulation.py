@@ -1,8 +1,8 @@
-from world import WORLD
-from robot import ROBOT
+from src.world import WORLD
+from src.robot import ROBOT
 import pybullet as p
 import pybullet_data
-import constants as c
+import src.constants as c
 import time
 import os
 

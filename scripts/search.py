@@ -1,9 +1,9 @@
 import sys
 import os
-sys.path.append(os.path.join(os.path.abspath(os.path.dirname(__file__)), '../src'))
-from parallelHillClimber import PARALLEL_HILL_CLIMBER
-from solution import SOLUTION
+# sys.path.append(os.path.join(os.path.abspath(os.path.dirname(__file__)), '../src'))
+from src.parallelHillClimber import PARALLEL_HILL_CLIMBER
 from datetime import datetime
+from src.utils import Create_World
 
 def search(saveName):
     """
@@ -13,8 +13,7 @@ def search(saveName):
 
     @return: None
     """
-    dummy = SOLUTION(-1)
-    dummy.Create_World()
+    Create_World()
     startTime = datetime.now()
     print(f"Search starting at:",startTime.time())
     phc = PARALLEL_HILL_CLIMBER()

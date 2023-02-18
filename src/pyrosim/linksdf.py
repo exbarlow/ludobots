@@ -1,12 +1,12 @@
-from pyrosim.inertialsdf     import INERTIAL_SDF
+from src.pyrosim.inertialsdf     import INERTIAL_SDF
 
-from pyrosim.geometrysdf     import GEOMETRY_SDF
+from src.pyrosim.geometrysdf     import GEOMETRY_SDF
 
-from pyrosim.collisionsdf    import COLLISION_SDF
+from src.pyrosim.collisionsdf    import COLLISION_SDF
 
-from pyrosim.visualsdf       import VISUAL_SDF
+from src.pyrosim.visualsdf       import VISUAL_SDF
 
-from pyrosim.commonFunctions import Save_Whitespace
+from src.pyrosim.commonFunctions import Save_Whitespace
 
 class LINK_SDF:
 

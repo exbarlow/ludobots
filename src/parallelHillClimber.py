@@ -1,5 +1,5 @@
-from solution import SOLUTION
-import constants as c
+from src.solution import SOLUTION
+import src.constants as c
 import copy
 import os
 import time

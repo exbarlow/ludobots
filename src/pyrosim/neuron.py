@@ -2,9 +2,9 @@ import math
 
 import pybullet
 
-import pyrosim.pyrosim as pyrosim
+import src.pyrosim.pyrosim as pyrosim
 
-import pyrosim.constants as c
+import src.pyrosim.constants as c
 
 class NEURON: 
 

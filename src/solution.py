@@ -1,9 +1,9 @@
 import numpy as np
-import pyrosim.pyrosim as pyrosim
+import src.pyrosim.pyrosim as pyrosim
 import os
 import random
-import constants as c
-from simulation import SIMULATION
+import src.constants as c
+from src.simulation import SIMULATION
 import time
 
 class SOLUTION:
@@ -49,14 +49,6 @@ class SOLUTION:
         # add the names of the links that will have sensors to the set of sensor links
         for index in indices:
             self.sensorLinks.add(self.linkNames[index])
-        # # DEBUG
-        # print("numLinks: ",self.numLinks)
-        # print("sensorProportion: ",sensorProportion)
-        # print("numSensorLinks: ",numSensorLinks)
-        # print("indices: ",indices)
-        # print("sensorLinks: ",self.sensorLinks)
-        
-
 
     def Create_Weights(self):
         numLayers = len(c.hiddenNeurons)
@@ -80,15 +72,6 @@ class SOLUTION:
                     self.weights[layer] = np.random.rand(c.hiddenNeurons[layer-1],numMotorNeurons) * 2 - 1
                 else:
                     self.weights[layer] = np.random.rand(c.hiddenNeurons[layer-1],c.hiddenNeurons[layer]) * 2 - 1
-
-    def Create_World(self):
-        """
-        Creates a world for the simulation. Currently, this is just a blank world.
-
-        @return: None
-        """
-        pyrosim.Start_SDF("src/robotfiles/world.sdf")
-        pyrosim.End()
 
     def Create_Body(self,save:bool):
         """
