@@ -1,7 +1,6 @@
 import os
-import sys
-sys.path.append(os.path.join(os.path.abspath(os.path.dirname(__file__)), '../src'))
-import constants as c
+
+from src import constants as c
 
 def Clear_Saved_Searches():
     """

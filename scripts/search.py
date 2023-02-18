@@ -1,9 +1,8 @@
 import sys
-import os
-# sys.path.append(os.path.join(os.path.abspath(os.path.dirname(__file__)), '../src'))
-from src.parallelHillClimber import PARALLEL_HILL_CLIMBER
 from datetime import datetime
-from src.utils import Create_World
+
+from src import PARALLEL_HILL_CLIMBER
+from src import Create_World
 
 def search(saveName):
     """
@@ -24,6 +23,8 @@ def search(saveName):
     phc.Show_Best(saveName)
 
 if __name__ == "__main__":
+    #! DEBUG
+    print(sys.argv)
     if len(sys.argv) == 0:
         print("Please provide a save name for the best solution.")
         exit()
