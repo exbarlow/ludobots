@@ -217,7 +217,7 @@ class SOLUTION:
         else:
             self.Create_Body(save=False)
             self.Create_Brain(save=False)
-            os.system(f"python3 src/simulate.py {directOrGUI} {self.myID} 2&>output.txt &")
+            os.system(f"python3 -m src.simulate {directOrGUI} {self.myID} 2&>output.txt &")
  
     def Wait_For_Simulation_To_End(self,save=False):
         fitnessFileName = f"{c.tempfilePath}fitness/{self.myID}.txt"

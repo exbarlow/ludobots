@@ -9,7 +9,7 @@ def runner(numTrials):
     @return: None
     """
     for i in range(numTrials):
-        os.system(f"python3 scripts/search.py dynamic_trial{i}")
+        os.system(f"python3 -m scripts.search dynamic_trial{i}")
 
 if __name__ == "__main__":
     runner(4)

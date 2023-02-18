@@ -23,8 +23,6 @@ def search(saveName):
     phc.Show_Best(saveName)
 
 if __name__ == "__main__":
-    #! DEBUG
-    print(sys.argv)
     if len(sys.argv) == 0:
         print("Please provide a save name for the best solution.")
         exit()
