@@ -21,6 +21,7 @@ and installing the requirements locally with `pip3 -r requirements.txt`.
   
 - 3D Expansion:
   - number of links and proportion of links to receive sensors is specified in `src/constants.py` as before. See diagram below for generation.
+  ![generation diagram](diagram.jpg)
   
 
 
