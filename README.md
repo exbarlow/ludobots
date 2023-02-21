@@ -26,3 +26,4 @@ and installing the requirements locally with `pip3 -r requirements.txt`.
   
 
 
+Inspired by https://www.reddit.com/r/ludobots/
