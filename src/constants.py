@@ -23,7 +23,7 @@ numberOfGenerations = 1
 populationSize = 1
 
 # relating to random snake generation -- minLinks should always be >= 2 !! WILL BREAK IF SET TO 1
-minLinks = 2
+minLinks = 4
 maxLinks = 10
 
 minSensorProportion = 0.3

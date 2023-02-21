@@ -22,16 +22,30 @@ class SOLUTION:
         self.links[rootLink.name] = rootLink
 
         while len(self.links) < self.numLinks:
-            randomParent = np.random.choice(list(self.links.keys()))
-            randomFace = np.random.choice(list(c.faces.keys()))
-            newJoint = JOINT(self.links[randomParent],randomFace)
-            newChild = LINK(newJoint,len(self.links))
-            newJoint.addChild(newChild)
+            links = list(self.links.keys())
+            weights = [6-len(self.links[link].connectedFaces) for link in links]
+            weights /= np.sum(weights)
+            randomParent = np.random.choice(links,p=weights)
 
+            availableKeys = set(c.faces.keys()) - (set(c.faces.keys()) & self.links[randomParent].connectedFaces)
+            if len(availableKeys) < 4:
+                # print("no available keys for parent",randomParent,"connected faces",self.links[randomParent].connectedFaces)
+                continue
+            
+            randomFace = np.random.choice(list(availableKeys))
+            
+            newJoint = JOINT(self.links[randomParent],randomFace)
+            
+            newChild = LINK(newJoint,len(self.links))
+            
+            newJoint.addChild(newChild)
+            
             overlapsAnyLinks = any([newChild.spacesOverlap(link) for link in self.links.values()])
+
             if not overlapsAnyLinks:
                 self.links[newChild.name] = newChild
                 self.joints[newJoint.name] = newJoint
+                self.links[randomParent].addConnectedFace(randomFace)
                     
         #! END NEW ASSIGNMENT 7 CODE WOOOOOOOOOOOO
 
@@ -216,7 +230,7 @@ class SOLUTION:
 
         #! this is really just for debugging so that things are printed to the terminal
         hideOutput = "2&>output.txt"
-        hideOutput = ""
+        # hideOutput = ""
         
         if save:
             # when save is True, we don't need to run async, so we can just run the simulation here

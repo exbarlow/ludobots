@@ -17,8 +17,7 @@ class ROBOT:
             os.system(f"rm {c.tempfilePath}body/{self.solutionID}.urdf")
         else:
             self.nn = NEURAL_NETWORK(f"{c.savedPath}brain/{savedName}.nndf")
-            print(os.path.exists(f"{c.savedPath}body/{savedName}.nndf"))
-            self.robotId = p.loadURDF(f"{c.savedPath}/body/{savedName}.urdf")
+            self.robotId = p.loadURDF(f"{c.savedPath}body/{savedName}.urdf")
         pyrosim.Prepare_To_Simulate(self.robotId)
         self.Prepare_To_Sense()
         self.Prepare_To_Act()

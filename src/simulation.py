@@ -60,27 +60,17 @@ class SIMULATION:
             p.addUserDebugText(f"FileName: {self.savedName} ", [-5, -2, 2], textColorRGB=[1, 0, 0], textSize=1.5)
             p.addUserDebugText(f"Fitness: {fitness}", [-5, -2, 0.5], textColorRGB=[1, 0, 0], textSize=1.5)
 
-        lastBounce = None
-        largestBounce = 0
-
         # for each time step, sense the world, think, act, and keep track of fitness
         for i in range(c.timeSteps):
             p.stepSimulation()
             self.robot.Sense(i)
             self.robot.Think()
             self.robot.Act()
-
-            if len(p.getContactPoints(self.robot.robotId,self.world.planeId)) > 0:
-                if lastBounce == None:
-                    lastBounce = i
-                else:
-                    bounce = i - lastBounce
-                    lastBounce = i
-                    largestBounce = max(bounce,largestBounce)
                 
-            self.robot.Set_Fitness(largestBounce)
             if self.directOrGUI == "GUI":
                 time.sleep(c.sleepTime)
+
+        self.robot.Set_Fitness(p.getAABB(self.robot.robotId)[1][1])
 
     def Get_Fitness(self):
         self.robot.Get_Fitness()
