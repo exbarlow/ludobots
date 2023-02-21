@@ -4,24 +4,36 @@ import os
 import random
 import src.constants as c
 from src.simulation import SIMULATION
+from src.joint import JOINT
+from src.link import LINK
 import time
 
 class SOLUTION:
     def __init__(self,sol_id):
         #!! HUGE FUTURE ISSUE: everything gets rerandomized each generation => need to fix this!!
         self.myID = sol_id
-        # randomize number of links
         self.numLinks = np.random.randint(c.minLinks,c.maxLinks)
-        # fill in link names
-        self.linkNames = [str(link) for link in range(self.numLinks)]
-        # fill in joint names
-        self.jointNames = []
-        for i in range(self.numLinks-1):
-            self.jointNames.append(f"{self.linkNames[i]}_{self.linkNames[i+1]}")
-        # randomize link lengths
-        self.linksToLengths = {}
-        for link in self.linkNames:
-            self.linksToLengths[link] = np.random.uniform(c.minLinkSize,c.maxLinkSize,(3,))
+        #! NEW ASSIGNMENT 7 CODE HERE WOOOOOO LETS GOOOOOOOOOO
+        self.joints = {}
+        self.links = {}
+        
+        # create the root link
+        rootLink = LINK(None,0)
+        self.links[rootLink.name] = rootLink
+
+        while len(self.links) < self.numLinks:
+            randomParent = np.random.choice(list(self.links.keys()))
+            randomFace = np.random.choice(list(c.faces.keys()))
+            newJoint = JOINT(self.links[randomParent],randomFace)
+            newChild = LINK(newJoint,len(self.links))
+            newJoint.addChild(newChild)
+
+            overlapsAnyLinks = any([newChild.spacesOverlap(link) for link in self.links.values()])
+            if not overlapsAnyLinks:
+                self.links[newChild.name] = newChild
+                self.joints[newJoint.name] = newJoint
+                    
+        #! END NEW ASSIGNMENT 7 CODE WOOOOOOOOOOOO
 
         self.sensorLinks = set()
         self.Get_Sensor_Links()
@@ -47,8 +59,7 @@ class SOLUTION:
         # choose which links will have sensors
         indices = np.random.choice(self.numLinks,numSensorLinks,replace=False)
         # add the names of the links that will have sensors to the set of sensor links
-        for index in indices:
-            self.sensorLinks.add(self.linkNames[index])
+        self.sensorLinks |= set(indices)
 
     def Create_Weights(self):
         numLayers = len(c.hiddenNeurons)
@@ -103,25 +114,21 @@ class SOLUTION:
 
         pyrosim.Start_URDF(filePath)
 
-        # get the greatest link z size
-        maxHeight = max(self.linksToLengths.values(), key = lambda x: x[2])[2]
-        firstYLength = self.linksToLengths[self.linkNames[0]][1]
+        #! START NEW ASSIGNMENT 7 CODE WOOOOOOOOOOOO
 
-        # send the first link and first joint, with absolute position
-        #! joint type and axis are hardcoded for now, don't matter for assignment 6
-        pyrosim.Send_Cube(name=self.linkNames[0],pos=[0,0,maxHeight/2],size=self.linksToLengths[self.linkNames[0]],color=Get_Link_Color(self.linkNames[0]))
-        pyrosim.Send_Joint(name=self.jointNames[0],parent=self.linkNames[0],child=self.linkNames[1],type="revolute",jointAxis="1 0 0",position=[0,firstYLength/2,maxHeight/2])
+        for link in self.links.values():
+            pyrosim.Send_Cube(name=str(link.name),pos=link.relativePosition,size=link.dims,color=Get_Link_Color(link.name))
+        
+        for joint in self.joints.values():
+            pyrosim.Send_Joint(name=str(joint.name),parent=str(joint.parent.name),child=str(joint.child.name),position=joint.position,jointAxis=joint.axis,type=joint.type)
 
-        # send the middle links and joints, with relative position
-        for i in range(1,self.numLinks-1):
-            yLength = self.linksToLengths[self.linkNames[i]][1]
-            pyrosim.Send_Cube(name=self.linkNames[i],pos=[0,yLength/2,0],size=self.linksToLengths[self.linkNames[i]],color=Get_Link_Color(self.linkNames[i]))
-            pyrosim.Send_Joint(name=self.jointNames[i],parent=self.linkNames[i],child=self.linkNames[i+1],type="revolute",jointAxis="1 0 0",position=[0,yLength,0])
-
-        # send the last link with relative position
-        lastYLength = self.linksToLengths[self.linkNames[-1]][1]
-        pyrosim.Send_Cube(name=self.linkNames[-1],pos=[0,lastYLength/2,0],size=self.linksToLengths[self.linkNames[-1]],color=Get_Link_Color(self.linkNames[-1]))
         pyrosim.End()
+
+
+
+        #! END NEW ASSIGNMENT 7 CODE WOOOOOOOOOOOO
+
+
 
 
     def Create_Brain(self,save:bool):
@@ -163,7 +170,7 @@ class SOLUTION:
             i += 1
 
         # send a motor neuron to each joint
-        for jointName in self.jointNames:
+        for jointName in self.joints.keys():
             pyrosim.Send_Motor_Neuron(name=i,jointName=jointName)
             i += 1
 
@@ -206,6 +213,10 @@ class SOLUTION:
         if directOrGUI != "DIRECT" and directOrGUI != "GUI":
             print("parameter must be DIRECT or GUI")
             exit()
+
+        #! this is really just for debugging so that things are printed to the terminal
+        hideOutput = "2&>output.txt"
+        hideOutput = ""
         
         if save:
             # when save is True, we don't need to run async, so we can just run the simulation here
@@ -217,7 +228,7 @@ class SOLUTION:
         else:
             self.Create_Body(save=False)
             self.Create_Brain(save=False)
-            os.system(f"python3 -m src.simulate {directOrGUI} {self.myID} 2&>output.txt &")
+            os.system(f"python3 -m src.simulate {directOrGUI} {self.myID} {hideOutput} &")
  
     def Wait_For_Simulation_To_End(self,save=False):
         fitnessFileName = f"{c.tempfilePath}fitness/{self.myID}.txt"

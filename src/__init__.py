@@ -8,3 +8,5 @@ from .simulation import SIMULATION
 from .solution import SOLUTION
 from .utils import Create_World, Start_Saved_Simulation
 from .world import WORLD
+from .joint import JOINT
+from .link import LINK
