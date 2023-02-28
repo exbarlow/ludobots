@@ -73,7 +73,8 @@ class SIMULATION:
             if self.directOrGUI == "GUI":
                 time.sleep(c.sleepTime)
 
-        self.robot.Set_Fitness(p.getAABB(self.robot.robotId)[1][1])
+        position, orientation = p.getBasePositionAndOrientation(self.robot.robotId)
+        self.robot.Set_Fitness(position[1])
 
     def Get_Fitness(self):
         #TODO add docstring

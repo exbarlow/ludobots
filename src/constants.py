@@ -3,7 +3,7 @@
 gravity = (0,0,-9.8)
 timeSteps = 1250
 sleepTime = 1/1000
-maxForce = 250
+maxForce = 150
 
 motorJointRange = 0.45
 
@@ -20,8 +20,8 @@ dataPath = "data/"
 savedPath = "saved_searches/"
 tempfilePath = "src/tempfiles/"
 
-numberOfGenerations = 200
-populationSize = 15
+numberOfGenerations = 50
+populationSize = 50
 
 # relating to random snake generation -- minLinks should always be >= 2 !! WILL BREAK IF SET TO 1
 minLinks = 2
