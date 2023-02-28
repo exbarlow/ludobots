@@ -9,6 +9,7 @@ from src.simulation import SIMULATION
 from src.joint import JOINT
 from src.link import LINK
 import time
+import sys
 
 #TODO: add docstrings for all functions
 class SOLUTION:
@@ -66,6 +67,13 @@ class SOLUTION:
         overlapsAnyLinks = any([newChild.spacesOverlap(link) for link in self.links.values()])
 
         if not overlapsAnyLinks:
+            try:
+                assert newChild.name not in self.links, "new link name already exists"
+            except:
+                print("adding 1 to new link name",newChild.name)
+                assert str(int(newChild.name) + 1) not in self.links, "new link name already exists"
+                newChild.name = str(int(newChild.name) + 1)
+
             self.links[newChild.name] = newChild
             self.joints[newJoint.name] = newJoint
             self.links[randomParent].addConnectedFace(randomFace)
@@ -83,6 +91,8 @@ class SOLUTION:
         self.links = copy.deepcopy(parent.links)
         self.sensorLinks = copy.deepcopy(parent.sensorLinks)
         self.weights = copy.deepcopy(parent.weights)
+        #! hopefully temporary
+        self.fitness = parent.fitness
         # print("child num links: ",self.numLinks)
 
     def Get_Sensor_Links(self):
@@ -115,18 +125,23 @@ class SOLUTION:
         # If there is no hidden layer, just create weights from sensors to motors
         if numLayers == 0:
             self.weights[0] = np.random.rand(numSensorNeurons,numMotorNeurons) * 2 - 1
-        # If there is only one hidden layer, create weights from sensors to first hidden layer and from first hidden layer to motors
-        elif numLayers == 1:
-            self.weights[0] = np.random.rand(numSensorNeurons,c.hiddenNeurons[0]) * 2 - 1
-            self.weights[1] = np.random.rand(c.hiddenNeurons[0],numMotorNeurons) * 2 - 1
+        # # If there is only one hidden layer, create weights from sensors to first hidden layer and from first hidden layer to motors
+        # elif numLayers == 1:
+        #     self.weights[0] = np.random.rand(numSensorNeurons,c.hiddenNeurons[0]) * 2 - 1
+        #     self.weights[1] = np.random.rand(c.hiddenNeurons[0],numMotorNeurons) * 2 - 1
+        # #!
+        # elif numLayers == 2:
+        #     self.weights[0] = np.random.rand(numSensorNeurons,c.hiddenNeurons[0]) * 2 - 1
+        #     self.weights[1] = np.random.rand(c.hiddenNeurons[0],c.hiddenNeurons[1]) * 2 - 1
+        #     self.weights[2] = np.random.rand(c.hiddenNeurons[1],numMotorNeurons) * 2 - 1
         else:
         # Else, we will create weights from sensors to first hidden layer, 
         # from last hidden layer to motors, 
         # and from each hidden layer to the next
-            for layer in range(numLayers):
+            for layer in range(numLayers+1):
                 if layer == 0:
                     self.weights[layer] = np.random.rand(numSensorNeurons,c.hiddenNeurons[layer]) * 2 - 1
-                elif layer == numLayers - 1:
+                elif layer == numLayers:
                     self.weights[layer] = np.random.rand(c.hiddenNeurons[layer-1],numMotorNeurons) * 2 - 1
                 else:
                     self.weights[layer] = np.random.rand(c.hiddenNeurons[layer-1],c.hiddenNeurons[layer]) * 2 - 1
@@ -257,15 +272,24 @@ class SOLUTION:
                 if layer == 0:
                     for i in range(numSensorNeurons):
                         for j in range(c.hiddenNeurons[0]):
-                            pyrosim.Send_Synapse(sourceNeuronName=sensorLinks[i], targetNeuronName=self.numLinks+j,weight=self.weights[0][i,j])
+                            pyrosim.Send_Synapse(sourceNeuronName=sensorLinks[i], targetNeuronName=numLinks+j,weight=self.weights[0][i,j])
                 else:
                     for i in range(c.hiddenNeurons[layer-1]):
                         for j in range(c.hiddenNeurons[layer]):
-                            pyrosim.Send_Synapse(sourceNeuronName=i+self.numLinks+Get_Cumulative_Hidden_Neuron_Count(layer-2), targetNeuronName=self.numLinks+Get_Cumulative_Hidden_Neuron_Count(layer-1)+j,weight=self.weights[layer][i,j])
+                            try:
+                                pyrosim.Send_Synapse(sourceNeuronName=i+numLinks+Get_Cumulative_Hidden_Neuron_Count(layer-2), targetNeuronName=numLinks+Get_Cumulative_Hidden_Neuron_Count(layer-1)+j,weight=self.weights[layer][i,j])
+                            except Exception as e:
+                                print("exception occured: ",e.with_traceback(sys.exc_info()[2]))
+                                print("self.sensorLinks: ",self.sensorLinks)
+                                pprint(self.weights)
+                                print("i",i)
+                                print("j",j)
+                                print("layer",layer)
+                                exit()
             # send synapses from last hidden layer to motors     
             for i in range(c.hiddenNeurons[len(c.hiddenNeurons)-1]):
                 for j in range(numMotorNeurons):
-                    pyrosim.Send_Synapse(sourceNeuronName=i+self.numLinks+Get_Cumulative_Hidden_Neuron_Count(len(c.hiddenNeurons)-2), targetNeuronName=self.numLinks+Get_Cumulative_Hidden_Neuron_Count(len(c.hiddenNeurons)-1)+j,weight=self.weights[len(c.hiddenNeurons)-1][i,j])
+                    pyrosim.Send_Synapse(sourceNeuronName=i+numLinks+Get_Cumulative_Hidden_Neuron_Count(len(c.hiddenNeurons)-2), targetNeuronName=numLinks+Get_Cumulative_Hidden_Neuron_Count(len(c.hiddenNeurons)-1)+j,weight=self.weights[len(c.hiddenNeurons)][i,j])
 
         pyrosim.End()
         return
@@ -280,7 +304,7 @@ class SOLUTION:
 
         #! this is really just for debugging so that things are printed to the terminal
         hideOutput = "2&>output.txt"
-        hideOutput = ""
+        # hideOutput = ""
         
         if save:
             # when save is True, we don't need to run async, so we can just run the simulation here
@@ -298,9 +322,16 @@ class SOLUTION:
         #TODO: add docstring
         #TODO: add comments
         fitnessFileName = f"{c.tempfilePath}fitness/{self.myID}.txt"
+        #! this is jank
+        timeWaited = 0
         while not os.path.exists(fitnessFileName):
             time.sleep(0.2)
-        while True:
+            timeWaited += 0.2
+            if timeWaited > 10:
+                print("fitness file not found, setting fitness to parent fitness")
+                break
+
+        while True and timeWaited <= 10:
             f = open(fitnessFileName,"r")
             content = f.read()
             if content != "":
@@ -382,7 +413,7 @@ class SOLUTION:
 
                 self.exceptNonMatchingMotorWeights("mutateBody (remove)")
 
-        if np.random.rand() < c.addLinkChance and len(self.links) < c.maxLinks:
+        elif np.random.rand() < c.addLinkChance and len(self.links) < c.maxLinks:
             newLink = None
             # attempt to generate a new non-overlapping link. try until it succeeds
             while newLink is None:

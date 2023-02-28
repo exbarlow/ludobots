@@ -4,6 +4,7 @@ import pybullet as p
 import src.pyrosim.pyrosim as pyrosim
 from src.pyrosim.neuralNetwork import NEURAL_NETWORK
 import os
+import time
 import src.constants as c
 
 #TODO: add docstrings
@@ -20,7 +21,18 @@ class ROBOT:
             os.system(f"rm {c.tempfilePath}body/{self.solutionID}.urdf")
         else:
             self.nn = NEURAL_NETWORK(f"{c.savedPath}brain/{savedName}.nndf")
-            self.robotId = p.loadURDF(f"{c.savedPath}body/{savedName}.urdf")
+            waitingTime = 0
+            while waitingTime < 3:
+                try:
+                    self.robotId = p.loadURDF(f"{c.savedPath}body/{savedName}.urdf")
+                    break
+                except p.error as e:
+                    print(f"Error loading URDF file: {e}")
+                    time.sleep(0.2)
+                    waitingTime += 0.2
+            if self.robotId == None:
+                raise RuntimeError(f"Failed to load URDF file after 3 seconds.")
+
         pyrosim.Prepare_To_Simulate(self.robotId)
         self.Prepare_To_Sense()
         self.Prepare_To_Act()

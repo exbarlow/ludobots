@@ -2,6 +2,10 @@ import math
 
 import pybullet
 
+from pprint import pprint
+
+import sys
+
 import src.pyrosim.pyrosim as pyrosim
 
 import src.pyrosim.constants as c
@@ -77,7 +81,19 @@ class NEURON:
         for synapse in synapses.keys():
             if synapse[1] == self.Get_Name():
                 synapseWeight = synapses[synapse].Get_Weight()
-                presynapticNeuronValue = neurons[synapse[0]].Get_Value()
+                #!
+                try:
+                    presynapticNeuronValue = neurons[synapse[0]].Get_Value()
+                except KeyError:
+                    pprint("\n",stream=sys.stderr)
+                    pprint("KeyError: ",stream=sys.stderr)
+                    pprint(f"{synapse[0]}",stream=sys.stderr)
+                    pprint(0,stream=sys.stderr)
+                    pprint("synapses",stream=sys.stderr)
+                    pprint(list(synapses.items()),stream=sys.stderr)
+                    pprint("neurons",stream=sys.stderr)
+                    pprint(list(neurons.items()),stream=sys.stderr)
+                    raise
                 self.Allow_Presynaptic_Neuron_To_Influence_Me(synapseWeight,presynapticNeuronValue)
         self.Threshold()
     

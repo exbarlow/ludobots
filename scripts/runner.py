@@ -11,10 +11,9 @@ def runner(numTrials:int):
     @return: `None`
     """
     graph = numTrials == 5
-    name = "plot_trial"
+    name = "small_magnitude_trial"
     for i in range(numTrials):
         # will add these to the graph
-        
         os.system(f"python3 -m scripts.search {name}_{i} {graph}")
 
     if graph:

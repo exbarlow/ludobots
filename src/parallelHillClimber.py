@@ -41,8 +41,7 @@ class PARALLEL_HILL_CLIMBER:
         self.Evaluate(self.parents)
 
         for currentGeneration in range(c.numberOfGenerations):
-            if currentGeneration%10 == 0:
-                print("current generation:",currentGeneration)
+            print("current generation:",currentGeneration,"/",c.numberOfGenerations,"highest fitness:",max(self.parents.values()).fitness)
             self.Evolve_For_One_Generation()
 
     def Evolve_For_One_Generation(self):
@@ -88,7 +87,7 @@ class PARALLEL_HILL_CLIMBER:
         #TODO: add comments
         for solution in solutions.values():
             solution.mutateBody()
-            # solution.flipSensors()
+            solution.flipSensors()
             solution.mutateWeights()
             
 
