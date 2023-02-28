@@ -17,6 +17,7 @@ and installing the requirements locally with `pip3 -r requirements.txt`.
  ![evolution diagram](evolution-mutation-diagram.jpg)
  
 ### Graphs
+![fitness curves](fitness-curves.png)
 
  
 ### Citation
