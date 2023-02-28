@@ -6,8 +6,11 @@ from src.pyrosim.neuralNetwork import NEURAL_NETWORK
 import os
 import src.constants as c
 
+#TODO: add docstrings
+#TODO: add comments
+#TODO: add type annotations
 class ROBOT:
-    def __init__(self,solutionID,savedName = ""):
+    def __init__(self,solutionID:int,savedName = ""):
         self.solutionID = solutionID
         self.fitness = 0
         if savedName == "":

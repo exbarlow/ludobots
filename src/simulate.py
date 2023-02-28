@@ -1,6 +1,7 @@
 from src import SIMULATION
 import sys
 
+#TODO: add comments
 directOrGUI = sys.argv[1]
 solutionID = sys.argv[2]
 simulation = SIMULATION(directOrGUI,solutionID)

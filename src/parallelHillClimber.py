@@ -3,8 +3,11 @@ import src.constants as c
 import copy
 import os
 import time
+#TODO: add annotations
 class PARALLEL_HILL_CLIMBER:
     def __init__(self,toGraph:bool,saveName:str):
+        #TODO: add docstring
+        #TODO: add comments
         os.system(f"rm {c.tempfilePath}fitness/*.txt")
         os.system(f"rm {c.tempfilePath}brain/*.nndf")
         os.system(f"rm {c.tempfilePath}body/*.urdf")
@@ -16,11 +19,11 @@ class PARALLEL_HILL_CLIMBER:
         
     def Evaluate(self,solutions):
         """
-        Evaluates the fitness of each solution in the solutions dictionary.
+        Evaluates the fitness of each `SOLUTION` in the `solutions` dictionary.
 
-        @solutions: A dictionary of solutions to evaluate. Usually self.parents or self.children.
+        @param `solutions`: A `dict` of `SOLUTION`s to evaluate. Usually `self.parents` or `self.children`.
 
-        @return: None
+        @return: `None`
         """
         for individual in solutions.values():
             individual.Start_Simulation("DIRECT")
@@ -30,10 +33,11 @@ class PARALLEL_HILL_CLIMBER:
 
     def Evolve(self):
         """
-        Evaluate parents, then evolves for numberOfGenerations generations.
+        Evaluate `self.parents`, then evolves for `c.numberOfGenerations` generations.
 
-        @return: None
+        @return: `None`
         """
+        #TODO: add comments
         self.Evaluate(self.parents)
 
         for currentGeneration in range(c.numberOfGenerations):
@@ -45,30 +49,31 @@ class PARALLEL_HILL_CLIMBER:
         """
         Evolves the population for one generation.
 
-        @return: None
+        @return: `None`
         """
+        #TODO: add comments
         self.Spawn()
         self.Mutate(self.children)
         self.Evaluate(self.children)
         self.Select()
         self.Cull_And_Replace()
         self.Reassign_IDs()
-        #!
-        assert self.toGraph == True, "toGraph must be True to graph"
         if self.toGraph:
             self.WriteGeneration()
         # self.Print_Highest_Fitness()
 
     def WriteGeneration(self):
+        #TODO: add docstring
         with open(f"scripts/{self.saveName}.txt",'a') as file:
             file.write(f"{max(self.parents.values()).fitness}\n")
 
     def Spawn(self):
         """
-        Creates a copy of each parent and stores it in self.children.
+        Creates a copy of each parent and stores it in `self.children`.
 
-        @return: None
+        @return: `None`
         """
+        #TODO: add comments
         self.children = {}
         for parentID, parent in self.parents.items():
             self.children[parentID] = copy.deepcopy(parent)
@@ -76,29 +81,37 @@ class PARALLEL_HILL_CLIMBER:
         
     def Mutate(self,solutions):
         """
-        Mutates each solution in the solutions dictionary.
+        Mutates each `SOLUTION` in the `solutions` dictionary.
 
-        @solutions: A dictionary of solutions to mutate. Usually self.children.
+        @param `solutions`: A dictionary of `SOLUTION`s to mutate. Usually `self.children`.
         """
+        #TODO: add comments
         for solution in solutions.values():
+            # solution.mutateBody()
+            solution.flipSensors()
             solution.mutateWeights()
+            
 
     def Select(self):
         """
         Selects between parent and child for each parent, replacing parent with its child if its fitness is higher. 
 
-        @return: None
+        @return: `None`
         """
         for parentID, parent in self.parents.items():
             if parent.fitness < self.children[parentID].fitness:
+                #!
+                if len(parent.links) > len(self.children[parentID].links):
+                    print("\n\nproceeding with removed link\n\n")
                 self.parents[parentID] = self.children[parentID]
     
     def Cull_And_Replace(self):
         """
-        Selects a percentage of the population to keep, then replaces the rest with clones of the kept percentage. Percentage is determined by constants.cullSize.
+        Selects a percentage of the population to keep, then replaces the rest with clones of the kept percentage. Percentage is determined by `c.cullSize`.
 
-        @return: None
+        @return: `None`
         """
+        #TODO: add comments
         parentsList = sorted(self.parents.items(), key=lambda x: x[1], reverse=True)
         self.parents = {ind: v[1] for ind, v in enumerate(parentsList[:c.populationSize//c.cullSize])}
         clones = []
@@ -115,35 +128,37 @@ class PARALLEL_HILL_CLIMBER:
 
     def Reassign_IDs(self):
         """
-        Reassigns the myID attribute of each parent to its key in self.parents in order to keep the range of ids [0,constants.populationSize).
+        Reassigns the `myID` attribute of each parent to its key in `self.parents` in order to keep the range of ids within `[0,c.populationSize)`.
 
-        @return: None
+        @return: `None`
         """
         for parentID in self.parents:
             self.parents[parentID].myID = parentID
 
-    def Print_Highest_Fitness(self,reverse=False):
+    def Print_Highest_Fitness(self,reverse:bool=False):
         """
         Prints the fitness of the most fit parent.
 
-        @reverse: If True, prints the fitness of the parent with smallest fitness (for cases where fitness should be minimized).
+        @param `reverse`: If `True`, prints the fitness of the parent with smallest fitness (for cases where fitness should be minimized).
 
-        @return: None
+        @return: `None`
         """
+        #TODO: add comments
         bestParent = max(self.parents.values())
         if reverse:
             print(-1 * bestParent.fitness)
         else:
             print(bestParent.fitness)
 
-    def Show_Best(self,saveName):
+    def Show_Best(self,saveName:str):
         """
-        Runs the simulation of the most fit parent, then saves the fitness and brain files to saved_searches/fitness and saved_searches/brain respectively.
+        Runs the simulation of the most fit parent, then saves the fitness and brain files to `saved_searches/fitness` and `saved_searches/brain` respectively.
 
-        @saveName: The name to save the fitness file as. Should not include the file extension or directory structure.
+        @param `saveName`: The name to save the fitness file as. Should not include the file extension or directory structure.
 
-        @return: None
+        @return: `None`
         """
+        #TODO: add comments
         bestParent = max(self.parents.values())
         self.Print_Highest_Fitness()
         bestParent.Start_Simulation("DIRECT",save=False)

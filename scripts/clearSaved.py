@@ -6,7 +6,7 @@ def Clear_Saved_Searches():
     """
     Clears the brain and fitness files from the saved_searches folder.
 
-    @return: None
+    @return: `None`
     """
     os.system(f"rm -v {c.savedPath}brain/*")
     os.system(f"rm -v {c.savedPath}fitness/*")

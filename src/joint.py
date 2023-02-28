@@ -1,6 +1,9 @@
 import src.constants as c 
 import numpy as np
 
+#TODO: add docstrings
+#TODO: add comments
+#TODO: add assertions?
 class JOINT:
     def __init__(self,parent,face=None):
         self.parent = parent

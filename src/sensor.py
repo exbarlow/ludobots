@@ -3,6 +3,9 @@ import src.constants as c
 import src.pyrosim.pyrosim as pyrosim
 import math
 
+#TODO: add docstrings
+#TODO: add comments
+#TODO: add type annotations
 class SENSOR:
     def __init__(self,linkName):
         self.linkName = linkName

@@ -8,7 +8,10 @@ import os
 
 
 class SIMULATION:
-    def __init__(self,directOrGUI,solutionID,savedName=""):
+    def __init__(self,directOrGUI:str,solutionID:int,savedName:str=""):
+        #TODO: add type annotation
+        #TODO: add docstring
+        #TODO: add comments
         self.directOrGUI = directOrGUI
         if self.directOrGUI == "DIRECT":
             self.physicsClient = p.connect(p.DIRECT)
@@ -30,9 +33,9 @@ class SIMULATION:
         """
         Runs the simulation.
 
-        @savedName: The name of the file to simulate. This should only include the saved name, not the folder structure. This is only used when calling this function from the viewSavedSearches.py script.
+        @param `savedName`: The name of the file to simulate. This should only include the saved name, not the folder structure. This is only used when calling this function from the `scripts/viewSaved.py` script.
 
-        @return: None
+        @return: `None`
         """
 
         # if the fitnessFile and brainFile exist add text to the screen with the file and the fitness
@@ -73,6 +76,7 @@ class SIMULATION:
         self.robot.Set_Fitness(p.getAABB(self.robot.robotId)[1][1])
 
     def Get_Fitness(self):
+        #TODO add docstring
         self.robot.Get_Fitness()
         
         

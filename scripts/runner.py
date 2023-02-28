@@ -2,13 +2,13 @@ import os
 import matplotlib.pyplot as plt
 from src import constants as c
 
-def runner(numTrials):
+def runner(numTrials:int):
     """
-    Runs the search.py script numTrials times.
+    Runs the `search.py` script `numTrials` times.
 
-    @numTrials: The number of times to run the search.py script.
+    @param `numTrials`: The number of times to run the `search.py` script.
 
-    @return: None
+    @return: `None`
     """
     graph = numTrials == 5
     name = "plot_trial"

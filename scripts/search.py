@@ -4,9 +4,9 @@ from datetime import datetime
 from src import PARALLEL_HILL_CLIMBER
 from src import Create_World
 
-def search(saveName,toGraph):
+def search(saveName:str,toGraph:str="False"):
     """
-    Runs a search for the most fit individual, based on parameters set in the constants.py file.
+    Runs a search for the most fit individual, based on parameters set in the `src/constants.py` file.
     
     @saveName: The name of the file to save the best solution to.
 
@@ -29,4 +29,4 @@ if __name__ == "__main__":
     elif len(sys.argv) > 3:
         print("Please provide only two arguments -- the save name for the best solution & whether or not it should be graphed.")
         exit()
-    search(sys.argv[1],sys.argv[2])
+    search(*(sys.argv[1:]))

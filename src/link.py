@@ -1,6 +1,9 @@
 import src.constants as c
 import numpy as np
 
+#TODO: add docstrings
+#TODO: add comments
+#TODO: add assertions?
 class LINK:
     def __init__(self,upstreamJoint,name):
         self.upstreamJoint = upstreamJoint
@@ -29,6 +32,10 @@ class LINK:
     def addConnectedFace(self,face):
         assert(face not in self.connectedFaces)
         self.connectedFaces.add(face)
+
+    def removeConnectedFace(self,face):
+        assert(face in self.connectedFaces)
+        self.connectedFaces.remove(face)
 
     def spacesOverlap(self,otherLink,tolerance=0.001):
         if self.space[2][0] < tolerance:
