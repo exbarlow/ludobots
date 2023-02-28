@@ -4,13 +4,15 @@ import copy
 import os
 import time
 class PARALLEL_HILL_CLIMBER:
-    def __init__(self):
+    def __init__(self,toGraph:bool,saveName:str):
         os.system(f"rm {c.tempfilePath}fitness/*.txt")
         os.system(f"rm {c.tempfilePath}brain/*.nndf")
         os.system(f"rm {c.tempfilePath}body/*.urdf")
         self.parents = {}
+        self.toGraph = toGraph
+        self.saveName = saveName
         for i in range(c.populationSize):
-            self.parents[i] = SOLUTION(i)
+            self.parents[i] = SOLUTION(i,isOriginal=True)
         
     def Evaluate(self,solutions):
         """
@@ -51,7 +53,15 @@ class PARALLEL_HILL_CLIMBER:
         self.Select()
         self.Cull_And_Replace()
         self.Reassign_IDs()
+        #!
+        assert self.toGraph == True, "toGraph must be True to graph"
+        if self.toGraph:
+            self.WriteGeneration()
         # self.Print_Highest_Fitness()
+
+    def WriteGeneration(self):
+        with open(f"scripts/{self.saveName}.txt",'a') as file:
+            file.write(f"{max(self.parents.values()).fitness}\n")
 
     def Spawn(self):
         """
@@ -62,7 +72,8 @@ class PARALLEL_HILL_CLIMBER:
         self.children = {}
         for parentID, parent in self.parents.items():
             self.children[parentID] = copy.deepcopy(parent)
-
+            self.children[parentID].inheritFromParent(parent)
+        
     def Mutate(self,solutions):
         """
         Mutates each solution in the solutions dictionary.
@@ -70,7 +81,7 @@ class PARALLEL_HILL_CLIMBER:
         @solutions: A dictionary of solutions to mutate. Usually self.children.
         """
         for solution in solutions.values():
-            solution.Mutate()
+            solution.mutateWeights()
 
     def Select(self):
         """

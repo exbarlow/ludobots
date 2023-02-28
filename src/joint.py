@@ -5,7 +5,7 @@ class JOINT:
     def __init__(self,parent,face=None):
         self.parent = parent
         #! temp: always revolute for now -> can play with this to see how behavior changes
-        self.type = "fixed"
+        self.type = "revolute"
         # the face of the parent to which the child connects, {0: +x, 1: -x, 2: +y, 3: -y, 4: +z, 5: -z}
         self.face = face
         self.upstreamJoint = self.parent.upstreamJoint

@@ -1,6 +1,7 @@
 import numpy as np
 import src.pyrosim.pyrosim as pyrosim
 import os
+import copy
 import random
 import src.constants as c
 from src.simulation import SIMULATION
@@ -9,56 +10,66 @@ from src.link import LINK
 import time
 
 class SOLUTION:
-    def __init__(self,sol_id):
-        #!! HUGE FUTURE ISSUE: everything gets rerandomized each generation => need to fix this!!
-        self.myID = sol_id
-        self.numLinks = np.random.randint(c.minLinks,c.maxLinks)
-        #! NEW ASSIGNMENT 7 CODE HERE WOOOOOO LETS GOOOOOOOOOO
-        self.joints = {}
-        self.links = {}
-        
-        # create the root link
-        rootLink = LINK(None,0)
-        self.links[rootLink.name] = rootLink
-
-        while len(self.links) < self.numLinks:
-            links = list(self.links.keys())
-            weights = [6-len(self.links[link].connectedFaces) for link in links]
-            weights /= np.sum(weights)
-            randomParent = np.random.choice(links,p=weights)
-
-            availableKeys = set(c.faces.keys()) - (set(c.faces.keys()) & self.links[randomParent].connectedFaces)
-            if len(availableKeys) < 4:
-                # print("no available keys for parent",randomParent,"connected faces",self.links[randomParent].connectedFaces)
-                continue
+    def __init__(self,sol_id, isOriginal=False):
+        if isOriginal:
+            self.myID = sol_id
+            self.numLinks = np.random.randint(c.minLinks,c.maxLinks)
+            self.joints = {}
+            self.links = {}
             
-            randomFace = np.random.choice(list(availableKeys))
-            
-            newJoint = JOINT(self.links[randomParent],randomFace)
-            
-            newChild = LINK(newJoint,len(self.links))
-            
-            newJoint.addChild(newChild)
-            
-            overlapsAnyLinks = any([newChild.spacesOverlap(link) for link in self.links.values()])
+            # create the root link
+            rootLink = LINK(None,0)
+            self.links[rootLink.name] = rootLink
 
-            if not overlapsAnyLinks:
-                self.links[newChild.name] = newChild
-                self.joints[newJoint.name] = newJoint
-                self.links[randomParent].addConnectedFace(randomFace)
-                    
-        #! END NEW ASSIGNMENT 7 CODE WOOOOOOOOOOOO
+            while len(self.links) < self.numLinks:
+                links = list(self.links.keys())
+                weights = [6-len(self.links[link].connectedFaces) for link in links]
+                weights /= np.sum(weights)
+                randomParent = np.random.choice(links,p=weights)
 
-        self.sensorLinks = set()
-        self.Get_Sensor_Links()
+                availableKeys = set(c.faces.keys()) - (set(c.faces.keys()) & self.links[randomParent].connectedFaces)
+                if len(availableKeys) < 4:
+                    # print("no available keys for parent",randomParent,"connected faces",self.links[randomParent].connectedFaces)
+                    continue
+                
+                randomFace = np.random.choice(list(availableKeys))
+                
+                newJoint = JOINT(self.links[randomParent],randomFace)
+                
+                newChild = LINK(newJoint,len(self.links))
+                
+                newJoint.addChild(newChild)
+                
+                overlapsAnyLinks = any([newChild.spacesOverlap(link) for link in self.links.values()])
 
-        self.weights = dict()
-        # create random weights dependent on number of neurons
-        self.Create_Weights()
+                if not overlapsAnyLinks:
+                    self.links[newChild.name] = newChild
+                    self.joints[newJoint.name] = newJoint
+                    self.links[randomParent].addConnectedFace(randomFace)
+
+            self.sensorLinks = set()
+            self.Get_Sensor_Links()
+
+            self.weights = dict()
+            # create random weights dependent on number of neurons
+            self.Create_Weights()
+            # print("parent num links: ",self.numLinks)
+        else:
+            pass
+
         
 
     def __lt__(self,other):
         return self.fitness < other.fitness
+    
+    def inheritFromParent(self,parent):
+        self.myID = parent.myID
+        self.numLinks = parent.numLinks
+        self.joints = copy.deepcopy(parent.joints)
+        self.links = copy.deepcopy(parent.links)
+        self.sensorLinks = copy.deepcopy(parent.sensorLinks)
+        self.weights = copy.deepcopy(parent.weights)
+        # print("child num links: ",self.numLinks)
 
     def Get_Sensor_Links(self):
         """
@@ -263,7 +274,7 @@ class SOLUTION:
         else:
             os.system(f"rm {fitnessFileName}")
 
-    def Mutate(self):
+    def mutateWeights(self):
         for layer, weights in self.weights.items():
             for i in range(weights.shape[0]):
                 for j in range(weights.shape[1]):
