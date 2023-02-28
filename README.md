@@ -16,6 +16,9 @@ and installing the requirements locally with `pip3 -r requirements.txt`.
  ![body generation diagram](body-generation-diagram.jpg)
  ![evolution diagram](evolution-mutation-diagram.jpg)
  
+### Graphs
+
+ 
 ### Citation
 this project was inspired by https://www.reddit.com/r/ludobots/
 and builds upon the following pyrosim repo: https://github.com/jbongard/pyrosim
