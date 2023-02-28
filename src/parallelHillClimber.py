@@ -100,9 +100,6 @@ class PARALLEL_HILL_CLIMBER:
         """
         for parentID, parent in self.parents.items():
             if parent.fitness < self.children[parentID].fitness:
-                #!
-                if len(parent.links) > len(self.children[parentID].links):
-                    print("\n\nproceeding with removed link\n\n")
                 self.parents[parentID] = self.children[parentID]
     
     def Cull_And_Replace(self):

@@ -26,30 +26,7 @@ class SOLUTION:
             self.links[rootLink.name] = rootLink
 
             while len(self.links) < self.numLinks:
-                links = list(self.links.keys())
-                weights = [6-len(self.links[link].connectedFaces) for link in links]
-                weights /= np.sum(weights)
-                randomParent = np.random.choice(links,p=weights)
-
-                availableKeys = set(c.faces.keys()) - (set(c.faces.keys()) & self.links[randomParent].connectedFaces)
-                if len(availableKeys) < 4:
-                    # print("no available keys for parent",randomParent,"connected faces",self.links[randomParent].connectedFaces)
-                    continue
-                
-                randomFace = np.random.choice(list(availableKeys))
-                
-                newJoint = JOINT(self.links[randomParent],randomFace)
-                
-                newChild = LINK(newJoint,len(self.links))
-                
-                newJoint.addChild(newChild)
-                
-                overlapsAnyLinks = any([newChild.spacesOverlap(link) for link in self.links.values()])
-
-                if not overlapsAnyLinks:
-                    self.links[newChild.name] = newChild
-                    self.joints[newJoint.name] = newJoint
-                    self.links[randomParent].addConnectedFace(randomFace)
+                self.generateNewLink()
 
             self.sensorLinks = set()
             self.Get_Sensor_Links()
@@ -62,6 +39,39 @@ class SOLUTION:
 
     def __lt__(self,other):
         return self.fitness < other.fitness
+    
+    def generateNewLink(self):
+        """
+        Attemps to generate a new link. If the link overlaps with any other links, it is discarded.
+
+        @return: the name of the new link if it was successfully generated, `None` otherwise
+        """
+        links = list(self.links.keys())
+        weights = [6-len(self.links[link].connectedFaces) for link in links]
+        weights /= np.sum(weights)
+        randomParent = np.random.choice(links,p=weights)
+
+        availableKeys = set(c.faces.keys()) - (set(c.faces.keys()) & self.links[randomParent].connectedFaces)
+        if len(availableKeys) < 4:
+            return None
+        
+        randomFace = np.random.choice(list(availableKeys))
+        
+        newJoint = JOINT(self.links[randomParent],randomFace)
+        
+        newChild = LINK(newJoint,len(self.links))
+        
+        newJoint.addChild(newChild)
+        
+        overlapsAnyLinks = any([newChild.spacesOverlap(link) for link in self.links.values()])
+
+        if not overlapsAnyLinks:
+            self.links[newChild.name] = newChild
+            self.joints[newJoint.name] = newJoint
+            self.links[randomParent].addConnectedFace(randomFace)
+            return newChild.name
+        else:
+            return None
     
     def inheritFromParent(self,parent):
         #TODO: add doctsring
@@ -215,7 +225,6 @@ class SOLUTION:
         if len(c.hiddenNeurons) == 0:
             for i in range(numSensorNeurons):
                 for j in range(numMotorNeurons):
-                    #!
                     try:
                         pyrosim.Send_Synapse(sourceNeuronName=sensorLinks[i], targetNeuronName=numLinks+j,weight=self.weights[0][i,j])
                     except Exception as e:
@@ -228,7 +237,6 @@ class SOLUTION:
         elif len(c.hiddenNeurons) == 1:
             for i in range(numSensorNeurons):
                 for j in range(c.hiddenNeurons[0]):
-                    #!
                     try:
                         pyrosim.Send_Synapse(sourceNeuronName=sensorLinks[i], targetNeuronName=numLinks+j,weight=self.weights[0][i,j])
                     except Exception as e:
@@ -331,20 +339,10 @@ class SOLUTION:
                 # if the link is already a sensor link, remove it from the set of sensor links and remove the corresponding weights (only if there is more than one sensor link)
                 if link in self.sensorLinks and len(self.sensorLinks) > 1:
                     self.removeSensorWeights(sorted(self.sensorLinks).index(link))
-                    #!
-                    # print("removing sensor link:", link)
-                    # print(self.sensorLinks)
-                    # pprint(self.weights[0])
-                    # print()
                     self.sensorLinks.remove(link)
                 elif link not in self.sensorLinks:
                     # if the link is not a sensor link, add it to the set of sensor links and add the corresponding weights
-                    #!
-                    # print("adding sensor link:", link)
-                    # print(self.sensorLinks)
                     self.sensorLinks.add(link)
-                    # print(self.sensorLinks)
-                    # print()
                     self.addSensorWeights(sorted(self.sensorLinks).index(link))
 
                 self.exceptNonMatchingSensorWeights("flipSensors")
@@ -385,8 +383,20 @@ class SOLUTION:
                 self.exceptNonMatchingMotorWeights("mutateBody (remove)")
 
         if np.random.rand() < c.addLinkChance and len(self.links) < c.maxLinks:
-            #TODO: add a new link, becoming a sensor weight with random chance. If it is, update the weights matrix accordingly. Update the joints and links dictionaries accordingly, and update the motor weights as well
-            pass
+            newLink = None
+            # attempt to generate a new non-overlapping link. try until it succeeds
+            while newLink is None:
+                newLink = self.generateNewLink()
+            
+            if np.random.rand() < c.newLinkSensorChance:
+                self.sensorLinks.add(newLink)
+                self.addSensorWeights(sorted(self.sensorLinks).index(newLink))
+                self.exceptNonMatchingSensorWeights("mutateBody (add)")
+            
+            upstreamJoint = self.links[newLink].upstreamJoint
+
+            self.addMotorWeights(sorted(self.joints).index(upstreamJoint.name))
+            self.exceptNonMatchingMotorWeights("mutateBody (add)")
 
     def addMotorWeights(self,motorIdx:int):
         """
@@ -397,8 +407,13 @@ class SOLUTION:
         @return: `None`
         """
         lastLayer = len(self.weights) - 1
-        newCol = np.random.rand(self.weights[lastLayer].shape[0],1) * 2 -1
+        newCol = np.random.rand(self.weights[lastLayer].shape[0]) * 2 - 1
+        #!
+        # print("old weights\n",self.weights[lastLayer])
+        # print("newCol\n",newCol)
+        # print(newCol.shape)
         newWeights = np.insert(self.weights[lastLayer],motorIdx,newCol,axis=1)
+        # print("new weights\n",newWeights)
         self.weights[lastLayer] = newWeights
 
     def removeMotorWeights(self,motorIdx:int):
@@ -485,7 +500,7 @@ class SOLUTION:
             assert len(self.joints) == self.weights[len(self.weights)-1].shape[1], f"len(self.joints) = {len(self.joints)}, self.weights[len(self.weights)-1].shape[1] = {self.weights[len(self.weights)-1].shape[1]}. These should be equal."
         except AssertionError as e:
             print(f"{funcName}: {e}")
-            print(self.joints)
+            pprint(self.joints)
             pprint(self.weights[len(self.weights)-1])
             exit()
         

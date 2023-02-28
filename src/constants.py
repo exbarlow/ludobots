@@ -30,6 +30,7 @@ maxLinks = 8
 addLinkChance = 0.05
 removeLinkChance = 0.05
 flipSensorLinkChance = 0.02
+newLinkSensorChance = 0.5
 
 minSensorProportion = 0.3
 maxSensorProportion = 0.7
