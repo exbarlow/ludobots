@@ -87,8 +87,8 @@ class PARALLEL_HILL_CLIMBER:
         """
         #TODO: add comments
         for solution in solutions.values():
-            # solution.mutateBody()
-            solution.flipSensors()
+            solution.mutateBody()
+            # solution.flipSensors()
             solution.mutateWeights()
             
 

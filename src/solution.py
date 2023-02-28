@@ -207,7 +207,7 @@ class SOLUTION:
             i += 1
 
         # send a motor neuron to each joint
-        for jointName in self.joints.keys():
+        for jointName in sorted(self.joints.keys()):
             pyrosim.Send_Motor_Neuron(name=i,jointName=jointName)
             i += 1
 
@@ -332,27 +332,22 @@ class SOLUTION:
                 if link in self.sensorLinks and len(self.sensorLinks) > 1:
                     self.removeSensorWeights(sorted(self.sensorLinks).index(link))
                     #!
-                    print("removing sensor link:", link)
-                    print(self.sensorLinks)
-                    pprint(self.weights[0])
-                    print()
+                    # print("removing sensor link:", link)
+                    # print(self.sensorLinks)
+                    # pprint(self.weights[0])
+                    # print()
                     self.sensorLinks.remove(link)
                 elif link not in self.sensorLinks:
                     # if the link is not a sensor link, add it to the set of sensor links and add the corresponding weights
                     #!
-                    print("adding sensor link:", link)
-                    print(self.sensorLinks)
+                    # print("adding sensor link:", link)
+                    # print(self.sensorLinks)
                     self.sensorLinks.add(link)
-                    print(self.sensorLinks)
-                    print()
+                    # print(self.sensorLinks)
+                    # print()
                     self.addSensorWeights(sorted(self.sensorLinks).index(link))
-                try:
-                    assert len(self.sensorLinks) == self.weights[0].shape[0], f"len(self.sensorLinks) = {len(self.sensorLinks)}, self.weights[0].shape[0] = {self.weights[0].shape[0]}. These should be equal."
-                except AssertionError as e:
-                    print(f"flipSensors: {e}")
-                    print(self.sensorLinks)
-                    pprint(self.weights[0])
-                    exit()
+
+                self.exceptNonMatchingSensorWeights("flipSensors")
 
     def mutateBody(self):
         """
@@ -377,12 +372,17 @@ class SOLUTION:
                 del self.links[linkToRemove]
                 if linkToRemove in self.sensorLinks:
                     # remove the weights associated with the sensor link
-                    self.removeSensorWeights(layer=0,sourceIdx=sorted(self.sensorLinks).index(linkToRemove))
+                    self.removeSensorWeights(sourceIdx=sorted(self.sensorLinks).index(linkToRemove))
                     # remove the sensor link from the sensor link set
                     self.sensorLinks.remove(linkToRemove)
+                    self.exceptNonMatchingSensorWeights("mutateBody (remove)")
+
                 # remove the joint from the joints dictionary
-                #TODO: reflect this change in the weights (motor/last layer)
+                motorToRemove = sorted(self.joints).index(upstreamJointToRemove.name)
+                self.removeMotorWeights(motorToRemove)
                 del self.joints[upstreamJointToRemove.name]
+
+                self.exceptNonMatchingMotorWeights("mutateBody (remove)")
 
         if np.random.rand() < c.addLinkChance and len(self.links) < c.maxLinks:
             #TODO: add a new link, becoming a sensor weight with random chance. If it is, update the weights matrix accordingly. Update the joints and links dictionaries accordingly, and update the motor weights as well
@@ -392,14 +392,26 @@ class SOLUTION:
         """
         Adds a new column of random weights in the last weight layer into `self.weights`, corresponding to the new joint.
 
-        @param motorIdx: the index of the new motor
+        @param `motorIdx`: the index of the new motor
+
+        @return: `None`
         """
-        #TODO: implement
-        pass
+        lastLayer = len(self.weights) - 1
+        newCol = np.random.rand(self.weights[lastLayer].shape[0],1) * 2 -1
+        newWeights = np.insert(self.weights[lastLayer],motorIdx,newCol,axis=1)
+        self.weights[lastLayer] = newWeights
 
     def removeMotorWeights(self,motorIdx:int):
-        #TODO: implement
-        pass
+        """
+        Removes a column of weights in the last weight layer from `self.weights`, corresponding to the removed joint.
+
+        @param `motorIdx`: the index of the motor to remove
+
+        @return: `None` 
+        """
+        lastLayer = len(self.weights) - 1
+        newWeights = np.delete(self.weights[lastLayer],motorIdx,axis=1)
+        self.weights[lastLayer] = newWeights
 
     def addSensorWeights(self,sourceIdx:int):
         """
@@ -444,3 +456,36 @@ class SOLUTION:
         @return: `None`
         """
         self.myID = new_id
+
+    def exceptNonMatchingSensorWeights(self,funcName:str):
+        """
+        Try-except wrapper to check that sensor weight matrix has the correct number of rows.
+
+        @param `funcName`: the name of the function that called this function
+
+        @return: `None`
+        """
+        try:
+            assert len(self.sensorLinks) == self.weights[0].shape[0], f"len(self.sensorLinks) = {len(self.sensorLinks)}, self.weights[0].shape[0] = {self.weights[0].shape[0]}. These should be equal."
+        except AssertionError as e:
+            print(f"{funcName}: {e}")
+            print(self.sensorLinks)
+            pprint(self.weights[0])
+            exit()
+
+    def exceptNonMatchingMotorWeights(self,funcName:str):
+        """
+        Try-except wrapper to check that motor weight matrix has the correct number of columns.
+
+        @param `funcName`: the name of the function that called this function
+
+        @return: `None`
+        """
+        try:
+            assert len(self.joints) == self.weights[len(self.weights)-1].shape[1], f"len(self.joints) = {len(self.joints)}, self.weights[len(self.weights)-1].shape[1] = {self.weights[len(self.weights)-1].shape[1]}. These should be equal."
+        except AssertionError as e:
+            print(f"{funcName}: {e}")
+            print(self.joints)
+            pprint(self.weights[len(self.weights)-1])
+            exit()
+        
