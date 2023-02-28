@@ -1,4 +1,4 @@
-# Artificial Life Assignment 7
+# Artificial Life Assignment 8
 
 ### Environment Setup
 
@@ -12,9 +12,10 @@ and installing the requirements locally with `pip3 -r requirements.txt`.
     - `python3 -m scripts.viewSaved` plays all of the simulations saved to `saved_searches/`.
     - `python3 -m scripts.clearSaved` clears the `saved_searches/` directory.
     
- ### Body/Brain Generation, Mutation, and Evolution
+### Body/Brain Generation, Mutation, and Evolution
  ![body generation diagram](body-generation-diagram.jpg)
  ![evolution diagram](evolution-mutation-diagram.jpg)
  
- 
- [NEED TO CITE]
+### Citation
+this project was inspired by https://www.reddit.com/r/ludobots/
+and builds upon the following pyrosim repo: https://github.com/jbongard/pyrosim
