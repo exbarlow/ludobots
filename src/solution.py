@@ -421,7 +421,12 @@ class SOLUTION:
             
             if np.random.rand() < c.newLinkSensorChance:
                 self.sensorLinks.add(newLink)
-                self.addSensorWeights(sorted(self.sensorLinks).index(newLink))
+                try:
+                    self.addSensorWeights(sorted(self.sensorLinks).index(newLink))
+                except TypeError as e:
+                    print(e)
+                    print(self.sensorLinks)
+                    exit()
                 self.exceptNonMatchingSensorWeights("mutateBody (add)")
             
             upstreamJoint = self.links[newLink].upstreamJoint

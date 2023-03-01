@@ -42,4 +42,4 @@ def runner(numTrials:int):
             os.system(f"rm scripts/{name}_{j}.txt")
 
 if __name__ == "__main__":
-    runner(5)
+    runner(10)
