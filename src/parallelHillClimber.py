@@ -63,7 +63,8 @@ class PARALLEL_HILL_CLIMBER:
 
     def WriteGeneration(self):
         #TODO: add docstring
-        with open(f"scripts/{self.saveName}.txt",'a') as file:
+        folderName, trialName = self.saveName.split("_")
+        with open(f"evolutions/{folderName}/{trialName}.txt",'a') as file:
             file.write(f"{max(self.parents.values()).fitness}\n")
 
     def Spawn(self):

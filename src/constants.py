@@ -1,7 +1,7 @@
 #TODO: add comments
 
 gravity = (0,0,-9.8)
-timeSteps = 1500
+timeSteps = 750
 sleepTime = 1/1000
 maxForce = 150
 
@@ -14,13 +14,13 @@ mutationRate = 0.35
 # controls the magnitude of mutation
 mutationPower = 1
 # the number of top individuals selected to be the parents of the next generation is 1//cullSize
-cullSize = 8
+cullSize = 5
 
 dataPath = "data/"
 savedPath = "saved_searches/"
 tempfilePath = "src/tempfiles/"
 
-numberOfGenerations = 500
+numberOfGenerations = 200
 populationSize = 10
 
 # relating to random snake generation -- minLinks should always be >= 2 !! WILL BREAK IF SET TO 1
