@@ -8,7 +8,7 @@ maxForce = 150
 motorJointRange = 0.45
 
 # dictionary of hidden layer neurons, key is layer number, value is number of neurons in that layer
-hiddenNeurons = {0:4,1:2}
+hiddenNeurons = {0:16,1:8,2:4}
 # controls the change of mutation
 mutationRate = 0.35
 # controls the magnitude of mutation

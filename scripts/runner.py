@@ -11,7 +11,7 @@ def runner(numTrials:int):
     @return: `None`
     """
     graph = numTrials >= 1
-    name = "cull-bottom-two"
+    name = "large-net"
     os.mkdir(f"evolutions/{name}")
     for i in range(numTrials):
         # will add these to the graph
