@@ -1,31 +1,31 @@
 #TODO: add comments
 
 gravity = (0,0,-9.8)
-timeSteps = 1250
+timeSteps = 1500
 sleepTime = 1/1000
 maxForce = 150
 
 motorJointRange = 0.45
 
 # dictionary of hidden layer neurons, key is layer number, value is number of neurons in that layer
-hiddenNeurons = {0:6,1:3}
+hiddenNeurons = {0:4,1:2}
 # controls the change of mutation
 mutationRate = 0.35
 # controls the magnitude of mutation
 mutationPower = 1
 # the number of top individuals selected to be the parents of the next generation is 1//cullSize
-cullSize = 5
+cullSize = 8
 
 dataPath = "data/"
 savedPath = "saved_searches/"
 tempfilePath = "src/tempfiles/"
 
-numberOfGenerations = 1
-populationSize = 1
+numberOfGenerations = 500
+populationSize = 10
 
 # relating to random snake generation -- minLinks should always be >= 2 !! WILL BREAK IF SET TO 1
 minLinks = 2
-maxLinks = 8
+maxLinks = 7
 
 addLinkChance = 0.05
 removeLinkChance = 0.05

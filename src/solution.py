@@ -125,15 +125,6 @@ class SOLUTION:
         # If there is no hidden layer, just create weights from sensors to motors
         if numLayers == 0:
             self.weights[0] = np.random.rand(numSensorNeurons,numMotorNeurons) * 2 - 1
-        # # If there is only one hidden layer, create weights from sensors to first hidden layer and from first hidden layer to motors
-        # elif numLayers == 1:
-        #     self.weights[0] = np.random.rand(numSensorNeurons,c.hiddenNeurons[0]) * 2 - 1
-        #     self.weights[1] = np.random.rand(c.hiddenNeurons[0],numMotorNeurons) * 2 - 1
-        # #!
-        # elif numLayers == 2:
-        #     self.weights[0] = np.random.rand(numSensorNeurons,c.hiddenNeurons[0]) * 2 - 1
-        #     self.weights[1] = np.random.rand(c.hiddenNeurons[0],c.hiddenNeurons[1]) * 2 - 1
-        #     self.weights[2] = np.random.rand(c.hiddenNeurons[1],numMotorNeurons) * 2 - 1
         else:
         # Else, we will create weights from sensors to first hidden layer, 
         # from last hidden layer to motors, 
@@ -240,27 +231,12 @@ class SOLUTION:
         if len(c.hiddenNeurons) == 0:
             for i in range(numSensorNeurons):
                 for j in range(numMotorNeurons):
-                    try:
-                        pyrosim.Send_Synapse(sourceNeuronName=sensorLinks[i], targetNeuronName=numLinks+j,weight=self.weights[0][i,j])
-                    except Exception as e:
-                        print("exception occured: ",e)
-                        print(self.links)
-                        print(sensorLinks)
-                        print(i)
-                        exit()
+                    pyrosim.Send_Synapse(sourceNeuronName=sensorLinks[i], targetNeuronName=numLinks+j,weight=self.weights[0][i,j])
         # if there is only one hidden layer, send synapses from sensors to first hidden layer, then from first hidden layer to motors
         elif len(c.hiddenNeurons) == 1:
             for i in range(numSensorNeurons):
                 for j in range(c.hiddenNeurons[0]):
-                    try:
-                        pyrosim.Send_Synapse(sourceNeuronName=sensorLinks[i], targetNeuronName=numLinks+j,weight=self.weights[0][i,j])
-                    except Exception as e:
-                        print("exception occured: ",e)
-                        pprint(self.links)
-                        pprint(sensorLinks)
-                        print(i)
-                        pprint(self.weights)
-                        exit()
+                    pyrosim.Send_Synapse(sourceNeuronName=sensorLinks[i], targetNeuronName=numLinks+j,weight=self.weights[0][i,j])
                     
             for i in range(c.hiddenNeurons[0]):
                 for j in range(numMotorNeurons):
@@ -276,16 +252,7 @@ class SOLUTION:
                 else:
                     for i in range(c.hiddenNeurons[layer-1]):
                         for j in range(c.hiddenNeurons[layer]):
-                            try:
-                                pyrosim.Send_Synapse(sourceNeuronName=i+numLinks+Get_Cumulative_Hidden_Neuron_Count(layer-2), targetNeuronName=numLinks+Get_Cumulative_Hidden_Neuron_Count(layer-1)+j,weight=self.weights[layer][i,j])
-                            except Exception as e:
-                                print("exception occured: ",e.with_traceback(sys.exc_info()[2]))
-                                print("self.sensorLinks: ",self.sensorLinks)
-                                pprint(self.weights)
-                                print("i",i)
-                                print("j",j)
-                                print("layer",layer)
-                                exit()
+                            pyrosim.Send_Synapse(sourceNeuronName=i+numLinks+Get_Cumulative_Hidden_Neuron_Count(layer-2), targetNeuronName=numLinks+Get_Cumulative_Hidden_Neuron_Count(layer-1)+j,weight=self.weights[layer][i,j])
             # send synapses from last hidden layer to motors     
             for i in range(c.hiddenNeurons[len(c.hiddenNeurons)-1]):
                 for j in range(numMotorNeurons):
@@ -444,12 +411,7 @@ class SOLUTION:
         """
         lastLayer = len(self.weights) - 1
         newCol = np.random.rand(self.weights[lastLayer].shape[0]) * 2 - 1
-        #!
-        # print("old weights\n",self.weights[lastLayer])
-        # print("newCol\n",newCol)
-        # print(newCol.shape)
         newWeights = np.insert(self.weights[lastLayer],motorIdx,newCol,axis=1)
-        # print("new weights\n",newWeights)
         self.weights[lastLayer] = newWeights
 
     def removeMotorWeights(self,motorIdx:int):

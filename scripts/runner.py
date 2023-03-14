@@ -10,8 +10,8 @@ def runner(numTrials:int):
 
     @return: `None`
     """
-    graph = numTrials == 5
-    name = "new_fitness_trial"
+    graph = numTrials >= 10
+    name = "search"
     for i in range(numTrials):
         # will add these to the graph
         os.system(f"python3 -m scripts.search {name}_{i} {graph}")
@@ -42,4 +42,4 @@ def runner(numTrials:int):
             os.system(f"rm scripts/{name}_{j}.txt")
 
 if __name__ == "__main__":
-    runner(10)
+    runner(14)
