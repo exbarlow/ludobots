@@ -1,7 +1,7 @@
 # Artificial Life Final Project -- The Engineer
 
 ## Teaser Gif (sorry for low quality)
-![name](readme_media/10_second_teaser.mp4)
+https://youtu.be/wFkkGInAI88
 
 ## Environment Setup
 
@@ -28,7 +28,6 @@ Below are the run instrunctions, as well a diagram explaining the program flow t
   - `scripts/search.py` -> `src/parallelHillClimber.py` -> `src/solution.py` -> `src/simulate.py` -> `src/simulation.py`. Robots, Brains, and Body generation are handled in `src/solution.py` and `src/simulation.py` for the most part.
     
 ### Body/Brain Generation, Mutation, and Evolution
-- [ ] Upload Body/Brain Generation
 ![mutation_diagram](readme_media/mutation_diagram.jpg)
 ![evolution_diagram](readme_media/evolution_diagram.jpg)
 
