@@ -1,7 +1,7 @@
 # Artificial Life Final Project -- The Engineer
 
 ## Teaser Gif (sorry for low quality)
-- [ ] Upload teaser gif
+![10_sec_teaser_gif](readme_media/10_second_teaser.mp4)
 
 ## Environment Setup
 
