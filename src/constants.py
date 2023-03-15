@@ -25,11 +25,11 @@ populationSize = 10
 
 # relating to random snake generation -- minLinks should always be >= 2 !! WILL BREAK IF SET TO 1
 minLinks = 2
-maxLinks = 7
+maxLinks = 6
 
-addLinkChance = 0.05
-removeLinkChance = 0.05
-flipSensorLinkChance = 0.02
+addLinkChance = 0.1
+removeLinkChance = 0.1
+flipSensorLinkChance = 0.05
 newLinkSensorChance = 0.5
 
 minSensorProportion = 0.3

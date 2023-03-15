@@ -1,7 +1,7 @@
 # Artificial Life Final Project -- The Engineer
 
 ## Teaser Gif (sorry for low quality)
-- [ ] Upload teaser gif
+![name](readme_media/10_second_teaser.mp4)
 
 ## Environment Setup
 
@@ -12,7 +12,7 @@ and installing the requirements locally with `pip3 -r requirements.txt`. I ran t
 - [ ] Upload 2-minute video link
 
 ## Methods
-- [ ] Include written explanation
+Below are the run instrunctions, as well a diagram explaining the program flow through the different files of this repository, as well as diagrams explaining brain & body generation and representation, mutation, and evolution throughout the generations.
 
 ### Run instructions
   - Scripts need to be run as modules.
@@ -23,23 +23,29 @@ and installing the requirements locally with `pip3 -r requirements.txt`. I ran t
     - `python -m scripts.clearSaved` clears the `saved_searches/` directory.
     
 ### Program flow
-- [ ] Upload Program flow diagram
+- The flow is as follows:
+- Run `python -m scripts.search {name}`
+  - `scripts/search.py` -> `src/parallelHillClimber.py` -> `src/solution.py` -> `src/simulate.py` -> `src/simulation.py`. Robots, Brains, and Body generation are handled in `src/solution.py` and `src/simulation.py` for the most part.
     
 ### Body/Brain Generation, Mutation, and Evolution
 - [ ] Upload Body/Brain Generation
-- [ ] Upload Mutation
-- [ ] Upload Selection/Evolution
+![mutation_diagram](readme_media/mutation_diagram.jpg)
+![evolution_diagram](readme_media/evolution_diagram.jpg)
 
 ## Results
-- [ ] Include a geneaology video (maybe a sequence of screenshots, show a couple moving).
-- [ ] Include the 500 trial
-  - there is a kind of elbow in the graph around ~40/50th trial, then huge amounts of flat space, occasionally raising slightly.
-- [ ] Write some explanation about how they get stuck
-- [ ] Include here two genealogies (as gifs & graph)
-- [ ] Was interested to see if there was any effect of the small neural network here --> maybe a larger network would allow the robot to learn different behaviors?
-  - [ ] Include the plots and tables
-- [ ] Some things that would be interesting to try in the future -- run this comparison with more trials, to see if the larger net would continue to improve above 200 trials.
-- [ ] Test different evolutionary algorithm that allows dips in fitness to try and escape local maxima -- also one that allows for more genetic diversity.
+- Here are the fitness curves from running ~14 trials (though 4 terminated early due to a strange concurrency bug), with 500 generations and population size of 10:
+  - ![fitness_cirve](readme_media/500_gen_search.png)
+  - there is a kind of elbow in the graph around ~40/50th trial, then huge amounts of flat space, occasionally raising slightly. This means that the algorithm is getting stuck in local maxima constantly, and for long periods of time.
+- It makes sense that a hill-climbing based approach would get stuck in local maxima, as it cannot go down the hill to try and find another maximum. It instead needs a significant mutation that can allow it to hop from the maximum onto a nearby slope (sort of). In general, I found that movement was heavily driven by the links touching the ground (duh, like legs), but to an extremely large extent. The only sensors were touch based, so evolution mainly revolved around getting beneficial sensor placement, or adding more touch points either to sense or to scoop the robot along the ground. The links that did not touch the ground seemed to only really serve the purpose of provinding weight for the robot to fall on certain points and then scuttle around, or to "vibrate" in some way that initiated scooping motions on the ground. Below are two links to videos of genealogies
+- [ ] Include here two genealogies (as gifs)
+- In the first video, the simple body first evolves different neural net weights to angle its upper piece at a favorable angle to fall forward, then evolves another block to cause it to fall on its side and move forward.
+- In the second video, the contact point-based evolution is clear. First it evolves to have a sensor to touch the ground, using the large square and small rectangle sheet to scoop itself along. The rest of the evolution evolves more weight to alter how the two main "movers" work, eventually adding some sort of arm that falls forward and works as a sensorless "scooper".
+- Something else that I was interested in was the effect of the shape of the robot's neural net (which I held constant) on the shape of the max_fitness curve. So, I ran an abbreviated simulation comparing small-net (4,2,) -- the same used in the above trial, with large-net (16,8,4). Both simulations ran with population size 10, for 200 generations, and were run 10 separate times. The graphs are presented below.
+- ![small-net](readme_media/small-net.png)
+- ![large-net](readme_media/large-net.png)
+- Something that instantly jumped out to me was how with the smaller net, the vast majority of the improvement via mutation ocurred within the first 100 generations, whereas with the larger net, many of the trials improved throughout the run, with very few having extremely long flat segments of no improvement. At first glance this makes sense, that a larger neural net would improve for longer as it has a much larger search space, but what is interesting about this is that the neural net only controls how the robot moves in response its sensors, and doesn't control as directly how the model decides what a "good" robot is. I don't fully understand why the larger net robots don't get stuck in local maxima for as long as the small-net robots do. Perhaps it would be interesting to run the comparison for more generations to see if this increasing trend continues, and for how long. It is also possible that this sample is due to a small sample size.
+- As seen in the above graphs, there are often periods of long stagnation in evolution. This is expected with a hill climber-based evolutionary algorithm, as no change in the organism will occur if there was no beneficial mutation. Mutations do not occur every cycle (see 
+- In the future it would be interesting to compare the currently used evolutionary algorithm, which stifles genetic diversity but allows for more opportunities for one individual solution to escape a local max, with evolutionary algorithms that do not use hill-climbing, allowing for temporary dips in fitness, as well as with algorithms that allow for a greater amount of diversity.
 
 
 ### Citation
