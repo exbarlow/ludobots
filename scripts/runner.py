@@ -10,9 +10,9 @@ def runner(numTrials:int):
 
     @return: `None`
     """
-    graph = numTrials >= 1
-    name = "large-net"
-    os.mkdir(f"evolutions/{name}")
+    graph = numTrials >= 15
+    name = "like_and_subscribe"
+    # os.mkdir(f"evolutions/{name}")
     for i in range(numTrials):
         # will add these to the graph
         os.system(f"python3 -m scripts.search {name}_{i} {graph}")

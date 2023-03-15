@@ -1,0 +1,51 @@
+<neuralNetwork>
+    <neuron name = "0" type = "sensor" linkName = "0" />
+    <neuron name = "2" type = "sensor" linkName = "2" />
+    <neuron name = "4" type = "sensor" linkName = "4" />
+    <neuron name = "5" type = "sensor" linkName = "5" />
+    <neuron name = "6" type = "hidden" />
+    <neuron name = "7" type = "hidden" />
+    <neuron name = "8" type = "hidden" />
+    <neuron name = "9" type = "hidden" />
+    <neuron name = "10" type = "hidden" />
+    <neuron name = "11" type = "hidden" />
+    <neuron name = "12" type = "motor"  jointName = "0_1" />
+    <neuron name = "13" type = "motor"  jointName = "0_3" />
+    <neuron name = "14" type = "motor"  jointName = "1_2" />
+    <neuron name = "15" type = "motor"  jointName = "3_4" />
+    <neuron name = "16" type = "motor"  jointName = "3_5" />
+    <synapse sourceNeuronName = "0" targetNeuronName = "6" weight = "-13.944714040761468" />
+    <synapse sourceNeuronName = "0" targetNeuronName = "7" weight = "4.396428636606563" />
+    <synapse sourceNeuronName = "0" targetNeuronName = "8" weight = "-0.0009519057878983039" />
+    <synapse sourceNeuronName = "0" targetNeuronName = "9" weight = "-0.1395474754807756" />
+    <synapse sourceNeuronName = "2" targetNeuronName = "6" weight = "-0.00020810722645228207" />
+    <synapse sourceNeuronName = "2" targetNeuronName = "7" weight = "0.005885541707048079" />
+    <synapse sourceNeuronName = "2" targetNeuronName = "8" weight = "-0.0934610911197043" />
+    <synapse sourceNeuronName = "2" targetNeuronName = "9" weight = "-0.0003291268392614857" />
+    <synapse sourceNeuronName = "4" targetNeuronName = "6" weight = "-0.0008614319506573061" />
+    <synapse sourceNeuronName = "4" targetNeuronName = "7" weight = "-0.004244748137449701" />
+    <synapse sourceNeuronName = "4" targetNeuronName = "8" weight = "0.0017538507205360518" />
+    <synapse sourceNeuronName = "4" targetNeuronName = "9" weight = "7.760978388906845e-05" />
+    <synapse sourceNeuronName = "5" targetNeuronName = "6" weight = "0.0045300558616119466" />
+    <synapse sourceNeuronName = "5" targetNeuronName = "7" weight = "0.7101438335227432" />
+    <synapse sourceNeuronName = "5" targetNeuronName = "8" weight = "-0.37736712555361995" />
+    <synapse sourceNeuronName = "5" targetNeuronName = "9" weight = "2.2639942580764503" />
+    <synapse sourceNeuronName = "6" targetNeuronName = "10" weight = "-1.032185405789499" />
+    <synapse sourceNeuronName = "6" targetNeuronName = "11" weight = "2.7702449709353285" />
+    <synapse sourceNeuronName = "7" targetNeuronName = "10" weight = "0.07875893406460399" />
+    <synapse sourceNeuronName = "7" targetNeuronName = "11" weight = "0.7106146760244885" />
+    <synapse sourceNeuronName = "8" targetNeuronName = "10" weight = "-0.7257251756161363" />
+    <synapse sourceNeuronName = "8" targetNeuronName = "11" weight = "-0.028948911351246435" />
+    <synapse sourceNeuronName = "9" targetNeuronName = "10" weight = "0.05076881242719719" />
+    <synapse sourceNeuronName = "9" targetNeuronName = "11" weight = "-0.0011047143736703097" />
+    <synapse sourceNeuronName = "10" targetNeuronName = "12" weight = "-26.230356474735984" />
+    <synapse sourceNeuronName = "10" targetNeuronName = "13" weight = "2.794120848034161e-07" />
+    <synapse sourceNeuronName = "10" targetNeuronName = "14" weight = "-0.21113695517316575" />
+    <synapse sourceNeuronName = "10" targetNeuronName = "15" weight = "-0.07154252330914108" />
+    <synapse sourceNeuronName = "10" targetNeuronName = "16" weight = "0.5467479579091066" />
+    <synapse sourceNeuronName = "11" targetNeuronName = "12" weight = "-0.028425578842727187" />
+    <synapse sourceNeuronName = "11" targetNeuronName = "13" weight = "-0.012088378700269936" />
+    <synapse sourceNeuronName = "11" targetNeuronName = "14" weight = "-1.4081056154187628" />
+    <synapse sourceNeuronName = "11" targetNeuronName = "15" weight = "305.58193384007836" />
+    <synapse sourceNeuronName = "11" targetNeuronName = "16" weight = "-0.5498632145641008" />
+</neuralNetwork>
