@@ -7,3 +7,5 @@ src/tempfiles/body/*
 src/tempfiles/fitness/*
 lineage
 lineage/*
+*.mov
+*.mp4
