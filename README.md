@@ -18,7 +18,7 @@ Below are the run instrunctions, as well a diagram explaining the program flow t
   - Scripts need to be run as modules.
     - `python -m scripts.search {name}` runs a search and saves the best result to `saved_searches/` under the name of `name`.
     - `python -m scripts.runner` runs multiple searches. It saves the sequence of max fitness per generation to a `.txt` file in the folder `evolutions/`.
-    - `python -m scripts.analysis` currently graphs the searches saved in `evolutions/`. There also exist functions to generate more analytic data, such as the average improvement for each beneficial mutation, total number of beneficial mutations, frequency, etc.
+    - `python -m scripts.analysis` currently graphs the searches saved in `evolutions/`. 
     - `python -m scripts.viewSaved` plays all of the simulations saved to `saved_searches/`.
     - `python -m scripts.clearSaved` clears the `saved_searches/` directory.
     
