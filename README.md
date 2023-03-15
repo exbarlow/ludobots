@@ -9,7 +9,7 @@ All of the used modules can be found in `requirements.txt`. It is recommended to
 and installing the requirements locally with `pip3 -r requirements.txt`. I ran this on python 3.11, though I don't think there should be any problems using 3.10 or 3.9.
 
 ## 2-minute video
-- [ ] Upload 2-minute video link
+https://youtu.be/f3OT6gh_v04
 
 ## Methods
 Below are the run instrunctions, as well a diagram explaining the program flow through the different files of this repository, as well as diagrams explaining brain & body generation and representation, mutation, and evolution throughout the generations.
