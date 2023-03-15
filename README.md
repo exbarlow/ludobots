@@ -1,7 +1,7 @@
 # Artificial Life Final Project -- The Engineer
 
 ## Teaser Gif (sorry for low quality)
-[] Upload teaser gif
+- [ ] Upload teaser gif
 
 ## Environment Setup
 
@@ -9,10 +9,10 @@ All of the used modules can be found in `requirements.txt`. It is recommended to
 and installing the requirements locally with `pip3 -r requirements.txt`. I ran this on python 3.11, though I don't think there should be any problems using 3.10 or 3.9.
 
 ## 2-minute video
-[] Upload 2-minute video link
+- [ ] Upload 2-minute video link
 
 ## Methods
-[] Include written explanation
+- [ ] Include written explanation
 
 ### Run instructions
   - Scripts need to be run as modules.
@@ -23,23 +23,23 @@ and installing the requirements locally with `pip3 -r requirements.txt`. I ran t
     - `python -m scripts.clearSaved` clears the `saved_searches/` directory.
     
 ### Program flow
-[] Upload Program flow diagram
+- [ ] Upload Program flow diagram
     
 ### Body/Brain Generation, Mutation, and Evolution
-[] Upload Body/Brain Generation
-[] Upload Mutation
-[] Upload Selection/Evolution
+- [ ] Upload Body/Brain Generation
+- [ ] Upload Mutation
+- [ ] Upload Selection/Evolution
 
 ## Results
-[] Include a geneaology video (maybe a sequence of screenshots, show a couple moving).
-[] Include the 500 trial
+- [ ] Include a geneaology video (maybe a sequence of screenshots, show a couple moving).
+- [ ] Include the 500 trial
   - there is a kind of elbow in the graph around ~40/50th trial, then huge amounts of flat space, occasionally raising slightly.
-[] Write some explanation about how they get stuck
-[] Include here two genealogies (as gifs & graph)
-[] Was interested to see if there was any effect of the small neural network here --> maybe a larger network would allow the robot to learn different behaviors?
-  [] Include the plots and tables
-[] Some things that would be interesting to try in the future -- run this comparison with more trials, to see if the larger net would continue to improve above 200 trials.
-[] Test different evolutionary algorithm that allows dips in fitness to try and escape local maxima -- also one that allows for more genetic diversity.
+- [ ] Write some explanation about how they get stuck
+- [ ] Include here two genealogies (as gifs & graph)
+- [ ] Was interested to see if there was any effect of the small neural network here --> maybe a larger network would allow the robot to learn different behaviors?
+  - [ ] Include the plots and tables
+- [ ] Some things that would be interesting to try in the future -- run this comparison with more trials, to see if the larger net would continue to improve above 200 trials.
+- [ ] Test different evolutionary algorithm that allows dips in fitness to try and escape local maxima -- also one that allows for more genetic diversity.
 
 
 ### Citation
