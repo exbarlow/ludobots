@@ -12,7 +12,7 @@ and installing the requirements locally with `pip3 -r requirements.txt`. I ran t
 - [ ] Upload 2-minute video link
 
 ## Methods
-- [ ] Include written explanation
+Below are the run instrunctions, as well a diagram explaining the program flow through the different files of this repository, as well as diagrams explaining brain & body generation and representation, mutation, and evolution throughout the generations.
 
 ### Run instructions
   - Scripts need to be run as modules.
@@ -36,12 +36,13 @@ and installing the requirements locally with `pip3 -r requirements.txt`. I ran t
   - there is a kind of elbow in the graph around ~40/50th trial, then huge amounts of flat space, occasionally raising slightly.
 - [ ] Write some explanation about how they get stuck
 - [ ] Include here two genealogies (as gifs & graph)
-- Something else that I was interested in was the effect of the shape of the robot's neural net (which I held constant) on the shape of the max_fitness curve. So, I ran an abbreviated simulation comparing small-net (4,2,) -- the same used in the above trial, with large-net (16,8,4). Both simulations ran with population size 10, for 200 trials, and were run 10 separate times. The graphs are presented below.
+- Something else that I was interested in was the effect of the shape of the robot's neural net (which I held constant) on the shape of the max_fitness curve. So, I ran an abbreviated simulation comparing small-net (4,2,) -- the same used in the above trial, with large-net (16,8,4). Both simulations ran with population size 10, for 200 generations, and were run 10 separate times. The graphs are presented below.
 - ![small-net](readme_media/small-net.png)
 - ![large-net](readme_media/large-net.png)
 - Something that instantly jumped out to me was how with the smaller net, the vast majority of the improvement via mutation ocurred within the first 100 generations, whereas with the larger net, many of the trials improved throughout the run, with very few having extremely long flat segments of no improvement. At first glance this makes sense, that a larger neural net would improve for longer as it has a much larger search space, but what is interesting about this is that the neural net only controls how the robot moves in response its sensors, and doesn't control as directly how the model decides what a "good" robot is. I don't fully understand why the larger net robots don't get stuck in local maxima for as long as the small-net robots do. Perhaps it would be interesting to run the comparison for more generations to see if this increasing trend continues, and for how long. It is also possible that this sample is due to a small sample size.
 - Here are some statistics related to the above comparison:
 - [ ] Include statistics.
+- As seen in the above graphs, there are often periods of long stagnation in evolution. This is expected with a hill climber-based evolutionary algorithm, as no change in the organism will occur if there was no beneficial mutation. Mutations do not occur every cycle (see 
 - In the future it would be interesting to compare the currently used evolutionary algorithm, which stifles genetic diversity but allows for more opportunities for one individual solution to escape a local max, with evolutionary algorithms that do not use hill-climbing, allowing for temporary dips in fitness, as well as with algorithms that allow for a greater amount of diversity.
 
 
